@@ -1,7 +1,19 @@
 window.views = {}
 
+views["error"] = """
+<div class="alert alert-error">
+  <a class="close" data-dismiss="alert" href="#">x</a>
+  {{message}}
+</div>
+"""
+
 views["index"] = """
-<div>asdfalskdfj</div>
+<form class="well form-inline" novalidate>
+  <div class="messages span6 offset2">
+  </div>
+  <input type="text" id="username-search" class="input-xlarge offset3" placeholder="Enter username..." required>
+  <button type="submit" class="btn btn-large">gitspect!</button>
+</form>
 """
 
 views["static"] = """

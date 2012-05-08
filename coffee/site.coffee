@@ -14,7 +14,7 @@ window.refreshTimeline = ->
 $ ->
   $('#timeline').masonry()
   placeArrows()
-  new App(el:$("#container"))
+  new App(el:$(".container"))
 
 ##
 # Extensions
@@ -32,15 +32,17 @@ Spine.Controller.include
 class App extends Spine.Controller
   @extend Spine.Events
 
+  elements:
+    ".messages":"messages"
+
   events:
-    "click [data-action=home], [data-action=budget]":"navigateTo"
+    "submit form":"search"
+    # "click [data-action=home], [data-action=budget]":"navigateTo"
 
   constructor: ->
     super
     @routes
-      "/": () ->
-        console.log("in here")
-        @html @view("index")
+      "/": () -> @html @view("index")
 
     Spine.Route.setup(history:true)
     Spine.Route.bind("navigate", -> App.trigger("unbind:all"))
@@ -48,5 +50,17 @@ class App extends Spine.Controller
   navigateTo: (e) =>
     e.preventDefault()
     @navigate($(e.target).attr("href"))
+
+  search: (e) =>
+    e.preventDefault()
+    $form = $(e.target)
+    username = $form.find("input").val()
+    if $.isEmptyObject(username)
+      @messages.html(@view("error", message:"Username is required"))
+    else if $form.get(0).checkValidity()
+      console.log("success")
+    else
+      @messages.html(@view("error", message:"Couldn't find user"))
+
 
 window.App = App

@@ -29,7 +29,7 @@
     $('#timeline').masonry();
     placeArrows();
     return new App({
-      el: $("#container")
+      el: $(".container")
     });
   });
 
@@ -47,16 +47,21 @@
 
     App.extend(Spine.Events);
 
+    App.prototype.elements = {
+      ".messages": "messages"
+    };
+
     App.prototype.events = {
-      "click [data-action=home], [data-action=budget]": "navigateTo"
+      "submit form": "search"
     };
 
     function App() {
+      this.search = __bind(this.search, this);
+
       this.navigateTo = __bind(this.navigateTo, this);
       App.__super__.constructor.apply(this, arguments);
       this.routes({
         "/": function() {
-          console.log("in here");
           return this.html(this.view("index"));
         }
       });
@@ -71,6 +76,24 @@
     App.prototype.navigateTo = function(e) {
       e.preventDefault();
       return this.navigate($(e.target).attr("href"));
+    };
+
+    App.prototype.search = function(e) {
+      var $form, username;
+      e.preventDefault();
+      $form = $(e.target);
+      username = $form.find("input").val();
+      if ($.isEmptyObject(username)) {
+        return this.messages.html(this.view("error", {
+          message: "Username is required"
+        }));
+      } else if ($form.get(0).checkValidity()) {
+        return console.log("success");
+      } else {
+        return this.messages.html(this.view("error", {
+          message: "Couldn't find user"
+        }));
+      }
     };
 
     return App;
