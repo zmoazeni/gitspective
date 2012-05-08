@@ -30,8 +30,6 @@ Spine.Controller.include
 ##
 
 class App extends Spine.Controller
-  @extend Spine.Events
-
   elements:
     ".messages":"messages"
 
@@ -43,9 +41,11 @@ class App extends Spine.Controller
     super
     @routes
       "/": () -> @html @view("index")
+      "/timeline/:user": (params) ->
+        console.log("in here for #{params.user}", params)
+        @html "user: #{params.user}"
 
-    Spine.Route.setup(history:true)
-    Spine.Route.bind("navigate", -> App.trigger("unbind:all"))
+    Spine.Route.setup()
 
   navigateTo: (e) =>
     e.preventDefault()
@@ -62,7 +62,7 @@ class App extends Spine.Controller
         if data.meta.status == 404
           @messages.html(@view("error", message:"User not found"))
         else
-          console.log("success")
+          @navigate("/timeline/#{username}")
         ).error(() => @messages.html(@view("error", message:"Something went wrong with the API")))
 
 

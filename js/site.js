@@ -45,8 +45,6 @@
 
     App.name = 'App';
 
-    App.extend(Spine.Events);
-
     App.prototype.elements = {
       ".messages": "messages"
     };
@@ -63,14 +61,13 @@
       this.routes({
         "/": function() {
           return this.html(this.view("index"));
+        },
+        "/timeline/:user": function(params) {
+          console.log("in here for " + params.user, params);
+          return this.html("user: " + params.user);
         }
       });
-      Spine.Route.setup({
-        history: true
-      });
-      Spine.Route.bind("navigate", function() {
-        return App.trigger("unbind:all");
-      });
+      Spine.Route.setup();
     }
 
     App.prototype.navigateTo = function(e) {
@@ -95,7 +92,7 @@
               message: "User not found"
             }));
           } else {
-            return console.log("success");
+            return _this.navigate("/timeline/" + username);
           }
         }).error(function() {
           return _this.messages.html(_this.view("error", {
