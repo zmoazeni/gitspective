@@ -1,0 +1,55 @@
+/* This strategy was taken from http://demos.9lessons.info/timeline/index.html */
+
+section {
+  position: relative;
+}
+
+#timeline-line {
+  background-color: #E08989;
+  height: 100%;
+  width: 4px;
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 468px;
+}
+
+#timeline {
+  width:860px;
+  margin: 0;
+  list-style: none;
+
+  li {
+    width: 408px;
+    margin: 10px 10px 10px 10px;
+    float: left;
+    background-color:#ffffff;
+    border:solid 1px #B4BBCD;
+    min-height:50px;
+    text-align:justify;
+    word-wrap:break-word;
+  }
+
+
+  .corner {
+    display: block;
+    height: 15px;
+    width: 13px;
+    padding: 0;
+    vertical-align: top;
+    z-index:2;
+    position: absolute;
+    margin-top: 8px;
+  }
+
+  li[data-align=l] .corner {
+    background: url("../img/right.png") no-repeat top right;    
+    margin-left: 408px;
+  }
+
+  li[data-align=r] .corner {
+    background: url("../img/left.png") no-repeat top right;    
+    margin-left: -13px;
+  }
+}
+
