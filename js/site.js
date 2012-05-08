@@ -1,8 +1,8 @@
 (function() {
   var App, User,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   $(function() {
     return new App({
@@ -17,10 +17,17 @@
     User.name = 'User';
 
     function User() {
+      this.created_at_date = __bind(this.created_at_date, this);
       return User.__super__.constructor.apply(this, arguments);
     }
 
     User.configure("User", "type", "url", "public_gists", "followers", "gravatar_id", "hireable", "avatar_url", "public_repos", "bio", "login", "email", "html_url", "created_at", "company", "blog", "location", "following", "name");
+
+    User.prototype.created_at_date = function() {
+      var sliced;
+      sliced = this.created_at.slice(0, this.created_at.length - 1);
+      return Date.parse(sliced).toString('MMMM d, yyyy');
+    };
 
     return User;
 

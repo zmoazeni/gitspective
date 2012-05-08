@@ -23,7 +23,9 @@ $ ->
 class User extends Spine.Model
   @configure "User", "type", "url", "public_gists", "followers", "gravatar_id", "hireable", "avatar_url",  "public_repos", "bio", "login", "email", "html_url", "created_at", "company", "blog", "location", "following", "name"
 
-
+  created_at_date: =>
+    sliced = @created_at.slice(0, @created_at.length - 1)
+    Date.parse(sliced).toString('MMMM d, yyyy')
 
 ##
 # App

@@ -20,7 +20,25 @@ views["index"] = """
 
 
 views["show"] = """
-<div>user: {{user.name}}</div>
+<header>
+  <div class="span1"><img src="{{user.avatar_url}}" alt="image of {{user.name}}"/></div>
+  <div class="span5">
+    <h1>{{user.name}} <a href="{{user.html_url}}">{{user.login}}</a></h1>
+    <ul>
+      {{#user.email}}
+        <li>Email: <a href="mailto:{{user.email}}">{{user.email}}</a></li>
+      {{/user.email}}
+
+      {{#user.company}}
+        <li>Company: {{user.company}}</li>
+      {{/user.company}}
+
+      {{#user.created_at}}
+        <li>Joined: {{user.created_at_date}}</li>
+      {{/user.created_at}}
+    </ul>
+  </div>
+</header>
 """
 
 views["static"] = """
