@@ -1,5 +1,6 @@
 (function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+  var Event, Repo, User, hasMorePages,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
@@ -9,7 +10,15 @@
     });
   });
 
-  window.User = (function(_super) {
+  hasMorePages = function(meta) {
+    return (meta["Link"] || []).filter(function(link) {
+      if (link[1]["rel"] === "next") {
+        return true;
+      }
+    }).length > 0;
+  };
+
+  User = (function(_super) {
 
     __extends(User, _super);
 
@@ -32,7 +41,7 @@
 
   })(Spine.Model);
 
-  window.Repo = (function(_super) {
+  Repo = (function(_super) {
 
     __extends(Repo, _super);
 
@@ -49,18 +58,12 @@
         _this = this;
       this.deleteAll();
       fetchHelper = function(page) {
-        console.log("Fetching page " + page);
+        console.log("Fetching repo page " + page);
         return $.getJSON("https://api.github.com/users/" + user.login + "/repos?page=" + page + "&callback=?", function(response) {
-          var nextExists;
           $.each(response.data, function(i, repoData) {
             return Repo.create(repoData);
           });
-          nextExists = (response.meta["Link"] || []).filter(function(link) {
-            if (link[1]["rel"] === "next") {
-              return true;
-            }
-          });
-          if (nextExists.length > 0) {
+          if (hasMorePages(response.meta)) {
             return fetchHelper(page + 1);
           }
         });
@@ -71,6 +74,53 @@
     return Repo;
 
   })(Spine.Model);
+
+  Event = (function(_super) {
+
+    __extends(Event, _super);
+
+    Event.name = 'Event';
+
+    function Event() {
+      return Event.__super__.constructor.apply(this, arguments);
+    }
+
+    Event.configure("Event", "type", "public", "repo", "created_at", "actor", "id", "payload");
+
+    Event.fetchPages = function(user, callback, page) {
+      var fetchHelper, max,
+        _this = this;
+      if (page == null) {
+        page = 1;
+      }
+      max = page + 2;
+      fetchHelper = function(currentPage, events, callback) {
+        var url;
+        console.log("Fetching event page " + currentPage);
+        url = "https://api.github.com/users/" + user.login + "/events?page=" + currentPage + "&callback=?";
+        return $.getJSON(url, function(response) {
+          $.each(response.data, function(i, eventData) {
+            return events.push(new Event(eventData));
+          });
+          if (currentPage < max && hasMorePages(response.meta)) {
+            return fetchHelper(currentPage + 1, events, callback);
+          } else {
+            return callback([currentPage + 1, events]);
+          }
+        });
+      };
+      return fetchHelper(page, [], callback);
+    };
+
+    return Event;
+
+  })(Spine.Model);
+
+  window.Github = {
+    User: User,
+    Repo: Repo,
+    Event: Event
+  };
 
   window.App = (function(_super) {
 
@@ -115,10 +165,18 @@
     }
 
     App.prototype.renderUser = function(user) {
+      var _this = this;
       Repo.fetch(user);
-      return this.content.html(this.view("show", {
+      this.content.html(this.view("show", {
         user: user
       }));
+      this.page = 1;
+      return Event.fetchPages(user, function(_arg) {
+        var events, page;
+        page = _arg[0], events = _arg[1];
+        _this.page = page;
+        return console.log(events);
+      });
     };
 
     App.prototype.navigateTo = function(e) {
