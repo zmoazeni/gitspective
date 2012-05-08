@@ -131,6 +131,10 @@
           return _this.messages.html(_this.view("error", {
             message: "User not found"
           }));
+        } else if (response.meta["X-RateLimit-Remaining"] === "0") {
+          return _this.messages.html(_this.view("error", {
+            message: "Your IP has hit your Github API limit. Please wait for it to reset"
+          }));
         } else {
           _this.messages.html("");
           _this.user = new User(response.data);

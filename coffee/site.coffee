@@ -80,6 +80,8 @@ class window.App extends Spine.Controller
     $.getJSON("https://api.github.com/users/#{username}?callback=?", (response) =>
       if response.meta.status == 404
         @messages.html(@view("error", message:"User not found"))
+      else if response.meta["X-RateLimit-Remaining"] == "0"
+        @messages.html(@view("error", message:"Your IP has hit your Github API limit. Please wait for it to reset"))
       else
         @messages.html("")
         @user = new User(response.data)
