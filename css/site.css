@@ -53,3 +53,8 @@ section {
   background: url("../img/left.png") no-repeat top right;
   margin-left: -13px;
 }
+
+/* line 56, ../sass/site.scss */
+footer {
+  clear: both;
+}
