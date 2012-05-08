@@ -27,7 +27,7 @@ section {
   list-style: none;
 }
 /* line 26, ../sass/site.scss */
-#timeline li {
+#timeline .item {
   width: 408px;
   margin: 10px 10px 10px 10px;
   float: left;
@@ -37,7 +37,11 @@ section {
   text-align: justify;
   word-wrap: break-word;
 }
-/* line 38, ../sass/site.scss */
+/* line 37, ../sass/site.scss */
+#timeline .prominent {
+  width: 600px;
+}
+/* line 41, ../sass/site.scss */
 #timeline .corner {
   display: block;
   height: 15px;
@@ -48,18 +52,18 @@ section {
   position: absolute;
   margin-top: 8px;
 }
-/* line 49, ../sass/site.scss */
+/* line 52, ../sass/site.scss */
 #timeline li[data-align=l] .corner {
   background: url("../img/right.png") no-repeat top right;
   margin-left: 408px;
 }
-/* line 54, ../sass/site.scss */
+/* line 57, ../sass/site.scss */
 #timeline li[data-align=r] .corner {
   background: url("../img/left.png") no-repeat top right;
   margin-left: -13px;
 }
 
-/* line 60, ../sass/site.scss */
+/* line 63, ../sass/site.scss */
 footer {
   clear: both;
 }

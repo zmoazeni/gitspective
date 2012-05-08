@@ -20,7 +20,7 @@ views["index"] = """
 
 
 views["show"] = """
-<header class="row">
+<header class="page-header well row">
   <div class="span1"><img src="{{user.avatar_url}}" alt="image of {{user.name}}"/></div>
   <div class="span5">
     <h1>{{user.name}} <a href="{{user.html_url}}">{{user.login}}</a></h1>
@@ -40,7 +40,7 @@ views["show"] = """
   </div>
 </header>
 
-<div id="timeline-container" class="row">
+<div id="timeline-container" class="row offset1">
   <div id="timeline-line">
   </div>
 
@@ -49,8 +49,12 @@ views["show"] = """
 </div>
 """
 
-views["event"] = """
-<li><span class="corner"></span>{{title}}</li>
+views["item"] = """
+<li class="item"><span class="corner"></span>{{title}}</li>
+"""
+
+views["joined"] = """
+<li id="joined" class="prominent"><div class="well span2 offset3">Joined: {{user.created_at_string}}</div></li>
 """
 
 views["static"] = """

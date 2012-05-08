@@ -60,8 +60,9 @@ window.Github = {User:User, Repo:Repo, Event:Event}
 class window.App extends Spine.Controller
   elements:
     "#messages":"messages"
-    "#content":"content"
+    "#content": "content"
     "#timeline":"timeline"
+    "#joined":  "joined"
 
   events:
     "submit form":"search"
@@ -85,8 +86,10 @@ class window.App extends Spine.Controller
   renderUser: (user) =>
     Repo.fetch(user)
     @content.html(@view("show", user:user))
-    @refreshElements()
+    @content.find("#timeline").append(@view("joined", user:user))
+    @refreshElements() # this refreshes @joined and @timeline
     @timeline.masonry()
+
     @page = 1
     Event.fetchPages user, ([page, events]) =>
       @page = page
@@ -96,12 +99,12 @@ class window.App extends Spine.Controller
 
   appendEvents: (events) ->
     events.forEach (event) =>
-      @timeline.append(@view("event", title:event.type))
+      @joined.before(@view("item", title:event.type))
     @refreshTimeline()
 
   placeArrows: ->
-    min_max = $.unique(@timeline.find("li").map((e) -> parseInt($(this).css("left")) )).sort()
-    @timeline.find("li").each ->
+    min_max = $.unique(@timeline.find(".item").map((e) -> parseInt($(this).css("left")) )).sort()
+    @timeline.find(".item").each ->
       $e = $(@)
       if parseInt($e.css("left")) == min_max[0]
         $e.attr("data-align", "l")

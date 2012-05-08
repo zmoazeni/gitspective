@@ -137,7 +137,8 @@
     App.prototype.elements = {
       "#messages": "messages",
       "#content": "content",
-      "#timeline": "timeline"
+      "#timeline": "timeline",
+      "#joined": "joined"
     };
 
     App.prototype.events = {
@@ -177,6 +178,9 @@
       this.content.html(this.view("show", {
         user: user
       }));
+      this.content.find("#timeline").append(this.view("joined", {
+        user: user
+      }));
       this.refreshElements();
       this.timeline.masonry();
       this.page = 1;
@@ -197,7 +201,7 @@
     App.prototype.appendEvents = function(events) {
       var _this = this;
       events.forEach(function(event) {
-        return _this.timeline.append(_this.view("event", {
+        return _this.joined.before(_this.view("item", {
           title: event.type
         }));
       });
@@ -206,10 +210,10 @@
 
     App.prototype.placeArrows = function() {
       var min_max;
-      min_max = $.unique(this.timeline.find("li").map(function(e) {
+      min_max = $.unique(this.timeline.find(".item").map(function(e) {
         return parseInt($(this).css("left"));
       })).sort();
-      return this.timeline.find("li").each(function() {
+      return this.timeline.find(".item").each(function() {
         var $e;
         $e = $(this);
         if (parseInt($e.css("left")) === min_max[0]) {

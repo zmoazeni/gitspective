@@ -23,7 +23,7 @@ section {
   margin: 0;
   list-style: none;
 
-  li {
+  .item {
     width: 408px;
     margin: 10px 10px 10px 10px;
     float: left;
@@ -34,6 +34,9 @@ section {
     word-wrap:break-word;
   }
 
+  .prominent {
+    width: 600px;
+  }
 
   .corner {
     display: block;
