@@ -29,6 +29,8 @@ class window.User extends Spine.Model
     Date.parse(sliced).toString('MMMM d, yyyy')
 
 class window.Repo extends Spine.Model
+  @configure "Repo", "updated_at", "clone_url", "has_downloads", "watchers", "homepage", "git_url", "mirror_url", "fork", "ssh_url", "url", "has_wiki", "has_issues", "forks", "language", "size", "html_url", "private", "created_at", "name", "open_issues", "description", "svn_url", "pushed_at"
+
   @fetch: (user) ->
     @deleteAll()
     fetchHelper = (page) =>
