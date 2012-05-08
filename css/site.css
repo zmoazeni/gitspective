@@ -5,6 +5,11 @@ section {
 }
 
 /* line 7, ../sass/site.scss */
+#timeline-container {
+  position: relative;
+}
+
+/* line 11, ../sass/site.scss */
 #timeline-line {
   background-color: #E08989;
   height: 100%;
@@ -15,13 +20,13 @@ section {
   left: 428px;
 }
 
-/* line 17, ../sass/site.scss */
+/* line 21, ../sass/site.scss */
 #timeline {
   width: 860px;
   margin: 0;
   list-style: none;
 }
-/* line 22, ../sass/site.scss */
+/* line 26, ../sass/site.scss */
 #timeline li {
   width: 408px;
   margin: 10px 10px 10px 10px;
@@ -32,7 +37,7 @@ section {
   text-align: justify;
   word-wrap: break-word;
 }
-/* line 34, ../sass/site.scss */
+/* line 38, ../sass/site.scss */
 #timeline .corner {
   display: block;
   height: 15px;
@@ -43,18 +48,18 @@ section {
   position: absolute;
   margin-top: 8px;
 }
-/* line 45, ../sass/site.scss */
+/* line 49, ../sass/site.scss */
 #timeline li[data-align=l] .corner {
   background: url("../img/right.png") no-repeat top right;
   margin-left: 408px;
 }
-/* line 50, ../sass/site.scss */
+/* line 54, ../sass/site.scss */
 #timeline li[data-align=r] .corner {
   background: url("../img/left.png") no-repeat top right;
   margin-left: -13px;
 }
 
-/* line 56, ../sass/site.scss */
+/* line 60, ../sass/site.scss */
 footer {
   clear: both;
 }

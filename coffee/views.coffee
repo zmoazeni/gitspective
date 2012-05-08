@@ -20,7 +20,7 @@ views["index"] = """
 
 
 views["show"] = """
-<header>
+<header class="row">
   <div class="span1"><img src="{{user.avatar_url}}" alt="image of {{user.name}}"/></div>
   <div class="span5">
     <h1>{{user.name}} <a href="{{user.html_url}}">{{user.login}}</a></h1>
@@ -39,6 +39,18 @@ views["show"] = """
     </ul>
   </div>
 </header>
+
+<div id="timeline-container" class="row">
+  <div id="timeline-line">
+  </div>
+
+  <ol id="timeline">
+  </ol>
+</div>
+"""
+
+views["event"] = """
+<li><span class="corner"></span>{{title}}</li>
 """
 
 views["static"] = """

@@ -1,21 +1,3 @@
-# window.placeArrows = ->
-#   min_max = $.unique($("#timeline li").map((e) -> parseInt($(this).css("left")) )).sort()
-#   $("#timeline li").each ->
-#     $e = $(@)
-#     if parseInt($e.css("left")) == min_max[0]
-#       $e.attr("data-align", "l")
-#     else
-#       $e.attr("data-align", "r")
-
-# window.refreshTimeline = ->
-#   $('#timeline').masonry("reload")
-#   placeArrows()
-
-$ ->
-  # $('#timeline').masonry()
-  # placeArrows()
-  new App(el:$(".container"))
-
 ##
 # Models
 ##
@@ -79,6 +61,7 @@ class window.App extends Spine.Controller
   elements:
     "#messages":"messages"
     "#content":"content"
+    "#timeline":"timeline"
 
   events:
     "submit form":"search"
@@ -102,11 +85,32 @@ class window.App extends Spine.Controller
   renderUser: (user) =>
     Repo.fetch(user)
     @content.html(@view("show", user:user))
+    @refreshElements()
+    @timeline.masonry()
     @page = 1
     Event.fetchPages user, ([page, events]) =>
       @page = page
       events.forEach((event) -> event.save())
       sorted = events.sort((a, b) -> b.created_at_date() - a.created_at_date())
+      @appendEvents(sorted)
+
+  appendEvents: (events) ->
+    events.forEach (event) =>
+      @timeline.append(@view("event", title:event.type))
+    @refreshTimeline()
+
+  placeArrows: ->
+    min_max = $.unique(@timeline.find("li").map((e) -> parseInt($(this).css("left")) )).sort()
+    @timeline.find("li").each ->
+      $e = $(@)
+      if parseInt($e.css("left")) == min_max[0]
+        $e.attr("data-align", "l")
+      else
+        $e.attr("data-align", "r")
+
+  refreshTimeline: ->
+    @timeline.masonry("reload")
+    @placeArrows()
 
   navigateTo: (e) =>
     e.preventDefault()
@@ -135,3 +139,10 @@ class window.App extends Spine.Controller
       @messages.html(@view("error", message:"Username is required"))
     else
       @fetchUser(username, () => @navigate("/timeline/#{username}"))
+
+##
+# Start the App
+##
+
+$ ->
+  window.app = new App(el:$(".container"))

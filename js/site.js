@@ -4,12 +4,6 @@
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-  $(function() {
-    return new App({
-      el: $(".container")
-    });
-  });
-
   hasMorePages = function(meta) {
     return (meta["Link"] || []).filter(function(link) {
       if (link[1]["rel"] === "next") {
@@ -142,7 +136,8 @@
 
     App.prototype.elements = {
       "#messages": "messages",
-      "#content": "content"
+      "#content": "content",
+      "#timeline": "timeline"
     };
 
     App.prototype.events = {
@@ -182,6 +177,8 @@
       this.content.html(this.view("show", {
         user: user
       }));
+      this.refreshElements();
+      this.timeline.masonry();
       this.page = 1;
       return Event.fetchPages(user, function(_arg) {
         var events, page, sorted;
@@ -190,10 +187,42 @@
         events.forEach(function(event) {
           return event.save();
         });
-        return sorted = events.sort(function(a, b) {
+        sorted = events.sort(function(a, b) {
           return b.created_at_date() - a.created_at_date();
         });
+        return _this.appendEvents(sorted);
       });
+    };
+
+    App.prototype.appendEvents = function(events) {
+      var _this = this;
+      events.forEach(function(event) {
+        return _this.timeline.append(_this.view("event", {
+          title: event.type
+        }));
+      });
+      return this.refreshTimeline();
+    };
+
+    App.prototype.placeArrows = function() {
+      var min_max;
+      min_max = $.unique(this.timeline.find("li").map(function(e) {
+        return parseInt($(this).css("left"));
+      })).sort();
+      return this.timeline.find("li").each(function() {
+        var $e;
+        $e = $(this);
+        if (parseInt($e.css("left")) === min_max[0]) {
+          return $e.attr("data-align", "l");
+        } else {
+          return $e.attr("data-align", "r");
+        }
+      });
+    };
+
+    App.prototype.refreshTimeline = function() {
+      this.timeline.masonry("reload");
+      return this.placeArrows();
     };
 
     App.prototype.navigateTo = function(e) {
@@ -244,5 +273,11 @@
     return App;
 
   })(Spine.Controller);
+
+  $(function() {
+    return window.app = new App({
+      el: $(".container")
+    });
+  });
 
 }).call(this);
