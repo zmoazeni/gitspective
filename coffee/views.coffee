@@ -1,16 +1,18 @@
+Spine.Controller.include
+  view: (name, context) ->
+    Mustache.render(views[name], context)
+
 window.views = {}
 
 views["error"] = """
-<div class="alert alert-error">
+<div class="alert alert-error span6">
   <a class="close" data-dismiss="alert" href="#">x</a>
   {{message}}
 </div>
 """
 
 views["index"] = """
-<form class="well form-inline">
-  <div class="messages span6 offset2">
-  </div>
+<form class="form-inline">
   <input type="text" id="username-search" class="input-xlarge offset3" placeholder="Enter username...">
   <button type="submit" class="btn btn-large">gitspect!</button>
 </form>

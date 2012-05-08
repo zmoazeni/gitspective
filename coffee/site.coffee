@@ -1,28 +1,28 @@
-window.placeArrows = ->
-  min_max = $.unique($("#timeline li").map((e) -> parseInt($(this).css("left")) )).sort()
-  $("#timeline li").each ->
-    $e = $(@)
-    if parseInt($e.css("left")) == min_max[0]
-      $e.attr("data-align", "l")
-    else
-      $e.attr("data-align", "r")
+# window.placeArrows = ->
+#   min_max = $.unique($("#timeline li").map((e) -> parseInt($(this).css("left")) )).sort()
+#   $("#timeline li").each ->
+#     $e = $(@)
+#     if parseInt($e.css("left")) == min_max[0]
+#       $e.attr("data-align", "l")
+#     else
+#       $e.attr("data-align", "r")
 
-window.refreshTimeline = ->
-  $('#timeline').masonry("reload")
-  placeArrows()
+# window.refreshTimeline = ->
+#   $('#timeline').masonry("reload")
+#   placeArrows()
 
 $ ->
-  $('#timeline').masonry()
-  placeArrows()
+  # $('#timeline').masonry()
+  # placeArrows()
   new App(el:$(".container"))
 
 ##
-# Extensions
+# Models
 ##
 
-Spine.Controller.include
-  view: (name, context) ->
-    Mustache.render(views[name], context)
+class User extends Spine.Model
+  @configure "User", "type", "url", "public_gists", "followers", "gravatar_id", "hireable", "avatar_url",  "public_repos", "bio", "login", "email", "html_url", "created_at", "company", "blog", "location", "following", "name"
+
 
 
 ##
@@ -31,7 +31,8 @@ Spine.Controller.include
 
 class App extends Spine.Controller
   elements:
-    ".messages":"messages"
+    "#messages":"messages"
+    "#content":"content"
 
   events:
     "submit form":"search"
@@ -40,16 +41,36 @@ class App extends Spine.Controller
   constructor: ->
     super
     @routes
-      "/": () -> @html @view("index")
-      "/timeline/:user": (params) ->
-        console.log("in here for #{params.user}", params)
-        @html "user: #{params.user}"
+      "/": () =>
+        @user = null
+        @content.html(@view("index"))
+      "/timeline/:user": (params) =>
+        if @user
+          @renderUser(@user)
+        else
+          @fetchUser(params.user, @renderUser)
 
     Spine.Route.setup()
+
+  renderUser: (user) =>
+    @content.html("<div>user: #{user.name}</div>")
 
   navigateTo: (e) =>
     e.preventDefault()
     @navigate($(e.target).attr("href"))
+
+  fetchUser: (username, callback) =>
+    $.getJSON("https://api.github.com/users/#{username}?callback=?", (response) =>
+      if response.meta.status == 404
+        @messages.html(@view("error", message:"User not found"))
+      else
+        @messages.html("")
+        @user = new User(response.data)
+        callback(@user)
+
+    ).error(() =>
+      @messages.html(@view("error", message:"Something went wrong with the API"))
+    )
 
   search: (e) =>
     e.preventDefault()
@@ -58,13 +79,7 @@ class App extends Spine.Controller
     if $.isEmptyObject(username)
       @messages.html(@view("error", message:"Username is required"))
     else
-      $.getJSON("https://api.github.com/users/#{username}?callback=?", (data) =>
-        if data.meta.status == 404
-          @messages.html(@view("error", message:"User not found"))
-        else
-          @navigate("/timeline/#{username}")
-        ).error(() => @messages.html(@view("error", message:"Something went wrong with the API")))
-
+      @fetchUser(username, () => @navigate("/timeline/#{username}"))
 
 
 window.App = App
