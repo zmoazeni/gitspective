@@ -44,6 +44,7 @@ class App extends Spine.Controller
       "/": () =>
         @user = null
         @content.html(@view("index"))
+
       "/timeline/:user": (params) =>
         if @user
           @renderUser(@user)
