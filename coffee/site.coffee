@@ -53,7 +53,7 @@ class App extends Spine.Controller
     Spine.Route.setup()
 
   renderUser: (user) =>
-    @content.html("<div>user: #{user.name}</div>")
+    @content.html(@view("show", user:user))
 
   navigateTo: (e) =>
     e.preventDefault()

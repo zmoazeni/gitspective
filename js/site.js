@@ -69,7 +69,9 @@
     }
 
     App.prototype.renderUser = function(user) {
-      return this.content.html("<div>user: " + user.name + "</div>");
+      return this.content.html(this.view("show", {
+        user: user
+      }));
     };
 
     App.prototype.navigateTo = function(e) {

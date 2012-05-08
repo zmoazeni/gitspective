@@ -18,6 +18,11 @@ views["index"] = """
 </form>
 """
 
+
+views["show"] = """
+<div>user: {{user.name}}</div>
+"""
+
 views["static"] = """
     <header>
       <h1><img src="https://secure.gravatar.com/avatar/d46a89672353a9c5258e187c8095ea40?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-140.png" alt="zmoazeni's gravatar" /> Zach Moazeni (zmoazeni)</h1>
