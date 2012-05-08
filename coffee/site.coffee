@@ -1,7 +1,8 @@
 window.placeArrows = ->
+  min_max = $.unique($("#timeline li").map((e) -> parseInt($(this).css("left")) )).sort()
   $("#timeline li").each ->
     $e = $(@)
-    if $e.css("left") == "40px"
+    if parseInt($e.css("left")) == min_max[0]
       $e.attr("data-align", "l")
     else
       $e.attr("data-align", "r")
