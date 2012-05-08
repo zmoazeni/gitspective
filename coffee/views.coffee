@@ -8,10 +8,10 @@ views["error"] = """
 """
 
 views["index"] = """
-<form class="well form-inline" novalidate>
+<form class="well form-inline">
   <div class="messages span6 offset2">
   </div>
-  <input type="text" id="username-search" class="input-xlarge offset3" placeholder="Enter username..." required>
+  <input type="text" id="username-search" class="input-xlarge offset3" placeholder="Enter username...">
   <button type="submit" class="btn btn-large">gitspect!</button>
 </form>
 """

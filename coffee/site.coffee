@@ -57,10 +57,14 @@ class App extends Spine.Controller
     username = $form.find("input").val()
     if $.isEmptyObject(username)
       @messages.html(@view("error", message:"Username is required"))
-    else if $form.get(0).checkValidity()
-      console.log("success")
     else
-      @messages.html(@view("error", message:"Couldn't find user"))
+      $.getJSON("https://api.github.com/users/#{username}?callback=?", (data) =>
+        if data.meta.status == 404
+          @messages.html(@view("error", message:"User not found"))
+        else
+          console.log("success")
+        ).error(() => @messages.html(@view("error", message:"Something went wrong with the API")))
+
 
 
 window.App = App

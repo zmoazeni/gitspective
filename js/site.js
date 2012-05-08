@@ -79,7 +79,8 @@
     };
 
     App.prototype.search = function(e) {
-      var $form, username;
+      var $form, username,
+        _this = this;
       e.preventDefault();
       $form = $(e.target);
       username = $form.find("input").val();
@@ -87,12 +88,20 @@
         return this.messages.html(this.view("error", {
           message: "Username is required"
         }));
-      } else if ($form.get(0).checkValidity()) {
-        return console.log("success");
       } else {
-        return this.messages.html(this.view("error", {
-          message: "Couldn't find user"
-        }));
+        return $.getJSON("https://api.github.com/users/" + username + "?callback=?", function(data) {
+          if (data.meta.status === 404) {
+            return _this.messages.html(_this.view("error", {
+              message: "User not found"
+            }));
+          } else {
+            return console.log("success");
+          }
+        }).error(function() {
+          return _this.messages.html(_this.view("error", {
+            message: "Something went wrong with the API"
+          }));
+        });
       }
     };
 
