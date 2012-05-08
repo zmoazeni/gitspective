@@ -22,19 +22,23 @@ $ ->
 
 hasMorePages = (meta) ->
   (meta["Link"] || []).filter((link) ->
-    return true if link[1]["rel"] == "next"
+    true if link[1]["rel"] == "next"
   ).length > 0
 
+parseISODate = (raw) -> Date.parse(raw.slice(0, raw.length - 1))
+
+TimeStamps = {
+  created_at_date: -> parseISODate(@created_at)
+  created_at_string: -> @created_at_date().toString('MMMM d, yyyy')
+}
 
 class User extends Spine.Model
   @configure "User", "type", "url", "public_gists", "followers", "gravatar_id", "hireable", "avatar_url",  "public_repos", "bio", "login", "email", "html_url", "created_at", "company", "blog", "location", "following", "name"
-
-  created_at_date: =>
-    sliced = @created_at.slice(0, @created_at.length - 1)
-    Date.parse(sliced).toString('MMMM d, yyyy')
+  @include TimeStamps
 
 class Repo extends Spine.Model
   @configure "Repo", "updated_at", "clone_url", "has_downloads", "watchers", "homepage", "git_url", "mirror_url", "fork", "ssh_url", "url", "has_wiki", "has_issues", "forks", "language", "size", "html_url", "private", "created_at", "name", "open_issues", "description", "svn_url", "pushed_at"
+  @include TimeStamps
 
   @fetch: (user) ->
     @deleteAll()
@@ -48,9 +52,10 @@ class Repo extends Spine.Model
 
 class Event extends Spine.Model
   @configure "Event", "type", "public", "repo", "created_at", "actor", "id", "payload"
+  @include TimeStamps
 
   @fetchPages: (user, callback, page = 1) ->
-    max = page + 2
+    max = page + 2 # pulls down 3 pages at a time
     fetchHelper = (currentPage, events, callback) =>
       console.log("Fetching event page #{currentPage}")
       url = "https://api.github.com/users/#{user.login}/events?page=#{currentPage}&callback=?"
@@ -100,7 +105,8 @@ class window.App extends Spine.Controller
     @page = 1
     Event.fetchPages user, ([page, events]) =>
       @page = page
-      console.log(events)
+      events.forEach((event) -> event.save())
+      sorted = events.sort((a, b) -> b.created_at_date() - a.created_at_date())
 
   navigateTo: (e) =>
     e.preventDefault()

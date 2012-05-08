@@ -34,7 +34,7 @@ views["show"] = """
       {{/user.company}}
 
       {{#user.created_at}}
-        <li>Joined: {{user.created_at_date}}</li>
+        <li>Joined: {{user.created_at_string}}</li>
       {{/user.created_at}}
     </ul>
   </div>

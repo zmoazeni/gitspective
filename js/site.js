@@ -1,8 +1,8 @@
 (function() {
-  var Event, Repo, User, hasMorePages,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+  var Event, Repo, TimeStamps, User, hasMorePages, parseISODate,
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   $(function() {
     return new App({
@@ -18,6 +18,19 @@
     }).length > 0;
   };
 
+  parseISODate = function(raw) {
+    return Date.parse(raw.slice(0, raw.length - 1));
+  };
+
+  TimeStamps = {
+    created_at_date: function() {
+      return parseISODate(this.created_at);
+    },
+    created_at_string: function() {
+      return this.created_at_date().toString('MMMM d, yyyy');
+    }
+  };
+
   User = (function(_super) {
 
     __extends(User, _super);
@@ -25,17 +38,12 @@
     User.name = 'User';
 
     function User() {
-      this.created_at_date = __bind(this.created_at_date, this);
       return User.__super__.constructor.apply(this, arguments);
     }
 
     User.configure("User", "type", "url", "public_gists", "followers", "gravatar_id", "hireable", "avatar_url", "public_repos", "bio", "login", "email", "html_url", "created_at", "company", "blog", "location", "following", "name");
 
-    User.prototype.created_at_date = function() {
-      var sliced;
-      sliced = this.created_at.slice(0, this.created_at.length - 1);
-      return Date.parse(sliced).toString('MMMM d, yyyy');
-    };
+    User.include(TimeStamps);
 
     return User;
 
@@ -52,6 +60,8 @@
     }
 
     Repo.configure("Repo", "updated_at", "clone_url", "has_downloads", "watchers", "homepage", "git_url", "mirror_url", "fork", "ssh_url", "url", "has_wiki", "has_issues", "forks", "language", "size", "html_url", "private", "created_at", "name", "open_issues", "description", "svn_url", "pushed_at");
+
+    Repo.include(TimeStamps);
 
     Repo.fetch = function(user) {
       var fetchHelper,
@@ -86,6 +96,8 @@
     }
 
     Event.configure("Event", "type", "public", "repo", "created_at", "actor", "id", "payload");
+
+    Event.include(TimeStamps);
 
     Event.fetchPages = function(user, callback, page) {
       var fetchHelper, max,
@@ -172,10 +184,15 @@
       }));
       this.page = 1;
       return Event.fetchPages(user, function(_arg) {
-        var events, page;
+        var events, page, sorted;
         page = _arg[0], events = _arg[1];
         _this.page = page;
-        return console.log(events);
+        events.forEach(function(event) {
+          return event.save();
+        });
+        return sorted = events.sort(function(a, b) {
+          return b.created_at_date() - a.created_at_date();
+        });
       });
     };
 
