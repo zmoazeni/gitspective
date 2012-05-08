@@ -1,6 +1,5 @@
 (function() {
-  var App, User,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
@@ -10,7 +9,7 @@
     });
   });
 
-  User = (function(_super) {
+  window.User = (function(_super) {
 
     __extends(User, _super);
 
@@ -33,7 +32,45 @@
 
   })(Spine.Model);
 
-  App = (function(_super) {
+  window.Repo = (function(_super) {
+
+    __extends(Repo, _super);
+
+    Repo.name = 'Repo';
+
+    function Repo() {
+      return Repo.__super__.constructor.apply(this, arguments);
+    }
+
+    Repo.fetch = function(user) {
+      var fetchHelper,
+        _this = this;
+      this.deleteAll();
+      fetchHelper = function(page) {
+        console.log("Fetching page " + page);
+        return $.getJSON("https://api.github.com/users/" + user.login + "/repos?page=" + page + "&callback=?", function(response) {
+          var nextExists;
+          $.each(response.data, function(i, repoData) {
+            return Repo.create(repoData);
+          });
+          nextExists = (response.meta["Link"] || []).filter(function(link) {
+            if (link[1]["rel"] === "next") {
+              return true;
+            }
+          });
+          if (nextExists.length > 0) {
+            return fetchHelper(page + 1);
+          }
+        });
+      };
+      return fetchHelper(1);
+    };
+
+    return Repo;
+
+  })(Spine.Model);
+
+  window.App = (function(_super) {
 
     __extends(App, _super);
 
@@ -76,6 +113,7 @@
     }
 
     App.prototype.renderUser = function(user) {
+      Repo.fetch(user);
       return this.content.html(this.view("show", {
         user: user
       }));
@@ -125,7 +163,5 @@
     return App;
 
   })(Spine.Controller);
-
-  window.App = App;
 
 }).call(this);

@@ -20,18 +20,31 @@ $ ->
 # Models
 ##
 
-class User extends Spine.Model
+
+class window.User extends Spine.Model
   @configure "User", "type", "url", "public_gists", "followers", "gravatar_id", "hireable", "avatar_url",  "public_repos", "bio", "login", "email", "html_url", "created_at", "company", "blog", "location", "following", "name"
 
   created_at_date: =>
     sliced = @created_at.slice(0, @created_at.length - 1)
     Date.parse(sliced).toString('MMMM d, yyyy')
 
+class window.Repo extends Spine.Model
+  @fetch: (user) ->
+    @deleteAll()
+    fetchHelper = (page) =>
+      console.log("Fetching page #{page}")
+      $.getJSON("https://api.github.com/users/#{user.login}/repos?page=#{page}&callback=?", (response) =>
+        $.each(response.data, (i, repoData) -> Repo.create(repoData))
+        nextExists = (response.meta["Link"] || []).filter((link) -> return true if link[1]["rel"] == "next")
+        fetchHelper(page + 1) if nextExists.length > 0
+      )
+    fetchHelper(1)
+
 ##
 # App
 ##
 
-class App extends Spine.Controller
+class window.App extends Spine.Controller
   elements:
     "#messages":"messages"
     "#content":"content"
@@ -56,6 +69,7 @@ class App extends Spine.Controller
     Spine.Route.setup()
 
   renderUser: (user) =>
+    Repo.fetch(user)
     @content.html(@view("show", user:user))
 
   navigateTo: (e) =>
@@ -83,6 +97,3 @@ class App extends Spine.Controller
       @messages.html(@view("error", message:"Username is required"))
     else
       @fetchUser(username, () => @navigate("/timeline/#{username}"))
-
-
-window.App = App
