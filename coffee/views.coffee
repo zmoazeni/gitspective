@@ -1,6 +1,9 @@
 Spine.Controller.include
   view: (name, context) ->
-    Mustache.render(views[name], context)
+    if views[name]
+      Mustache.render(views[name], context)
+    else
+      throw "Can't find view #{name}"
 
 window.views = {}
 
@@ -131,6 +134,15 @@ views["pull_request"] = """
   <span class="corner"></span>
   <h1>Opened a <a href="{{url}}">pull request</a> for <a href="{{repo_url}}">{{repo}}</a></h1>
   <blockquote>{{comment}}</blockquote>
+  <span class="date">{{date}}</span>
+</li>
+"""
+
+views["fork"] = """
+<li class="item" data-id="{{id}}">
+  <span class="corner"></span>
+  <h1>Forked <a href="{{fork_url}}">{{fork_name}}</a> from <a href="{{repo_url}}">{{repo}}</a></h1>
+  {{description}}
   <span class="date">{{date}}</span>
 </li>
 """

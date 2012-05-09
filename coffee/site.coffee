@@ -57,6 +57,7 @@ class Event extends Spine.Model
       when "PullRequestReviewCommentEvent" then "pull_request_comment"
       when "IssueCommentEvent" then "issue_comment"
       when "CommitCommentEvent" then "commit_comment"
+      when "ForkEvent" then "fork"
       when "PullRequestEvent"
         if @payload.action == "opened" then "pull_request" else "skip"
       when "CreateEvent"
@@ -80,6 +81,7 @@ class Event extends Spine.Model
           comment:@payload.comment.body
           repo_url:"https://github.com/#{@repo.name}"
           repo:@repo.name
+          date:@created_at_short_string(),
         ]
       when "pull_request_comment"
         [view,
@@ -88,6 +90,7 @@ class Event extends Spine.Model
           comment:@payload.comment.body
           repo_url:"https://github.com/#{@repo.name}"
           repo:@repo.name
+          date:@created_at_short_string(),
         ]
       when "commit_comment"
         [view,
@@ -96,6 +99,7 @@ class Event extends Spine.Model
           comment:@payload.comment.body
           repo_url:"https://github.com/#{@repo.name}"
           repo:@repo.name
+          date:@created_at_short_string(),
         ]
       when "pull_request"
         [view,
@@ -104,6 +108,17 @@ class Event extends Spine.Model
           comment:@payload.pull_request.body
           repo_url:"https://github.com/#{@repo.name}"
           repo:@repo.name
+          date:@created_at_short_string(),
+        ]
+      when "fork"
+        [view,
+          id:@id
+          fork_url:@payload.forkee.html_url
+          fork_name:"#{@actor.login}/#{@payload.forkee.name}"
+          description:@payload.forkee.description
+          repo_url:"https://github.com/#{@repo.name}"
+          repo:@repo.name
+          date:@created_at_short_string()
         ]
       when "repository"
         [view, id:@id, title:@repo.name, date:@created_at_short_string()]

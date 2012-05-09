@@ -129,6 +129,8 @@
           return "issue_comment";
         case "CommitCommentEvent":
           return "commit_comment";
+        case "ForkEvent":
+          return "fork";
         case "PullRequestEvent":
           if (this.payload.action === "opened") {
             return "pull_request";
@@ -181,7 +183,8 @@
               url: this.payload.issue.html_url,
               comment: this.payload.comment.body,
               repo_url: "https://github.com/" + this.repo.name,
-              repo: this.repo.name
+              repo: this.repo.name,
+              date: this.created_at_short_string()
             }
           ];
         case "pull_request_comment":
@@ -191,7 +194,8 @@
               url: this.payload.comment._links.html.href,
               comment: this.payload.comment.body,
               repo_url: "https://github.com/" + this.repo.name,
-              repo: this.repo.name
+              repo: this.repo.name,
+              date: this.created_at_short_string()
             }
           ];
         case "commit_comment":
@@ -201,7 +205,8 @@
               url: this.payload.comment.html_url,
               comment: this.payload.comment.body,
               repo_url: "https://github.com/" + this.repo.name,
-              repo: this.repo.name
+              repo: this.repo.name,
+              date: this.created_at_short_string()
             }
           ];
         case "pull_request":
@@ -211,7 +216,20 @@
               url: this.payload.pull_request._links.html.href,
               comment: this.payload.pull_request.body,
               repo_url: "https://github.com/" + this.repo.name,
-              repo: this.repo.name
+              repo: this.repo.name,
+              date: this.created_at_short_string()
+            }
+          ];
+        case "fork":
+          return [
+            view, {
+              id: this.id,
+              fork_url: this.payload.forkee.html_url,
+              fork_name: "" + this.actor.login + "/" + this.payload.forkee.name,
+              description: this.payload.forkee.description,
+              repo_url: "https://github.com/" + this.repo.name,
+              repo: this.repo.name,
+              date: this.created_at_short_string()
             }
           ];
         case "repository":

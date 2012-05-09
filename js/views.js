@@ -2,7 +2,11 @@
 
   Spine.Controller.include({
     view: function(name, context) {
-      return Mustache.render(views[name], context);
+      if (views[name]) {
+        return Mustache.render(views[name], context);
+      } else {
+        throw "Can't find view " + name;
+      }
     }
   });
 
@@ -31,6 +35,8 @@
   views["commit_comment"] = "<li class=\"item\" data-id=\"{{id}}\">\n  <span class=\"corner\"></span>\n  <h1>Commented on a <a href=\"{{url}}\">commit</a> on <a href=\"{{repo_url}}\">{{repo}}</a></h1>\n  <blockquote>{{comment}}</blockquote>\n  <span class=\"date\">{{date}}</span>\n</li>";
 
   views["pull_request"] = "<li class=\"item\" data-id=\"{{id}}\">\n  <span class=\"corner\"></span>\n  <h1>Opened a <a href=\"{{url}}\">pull request</a> for <a href=\"{{repo_url}}\">{{repo}}</a></h1>\n  <blockquote>{{comment}}</blockquote>\n  <span class=\"date\">{{date}}</span>\n</li>";
+
+  views["fork"] = "<li class=\"item\" data-id=\"{{id}}\">\n  <span class=\"corner\"></span>\n  <h1>Forked <a href=\"{{fork_url}}\">{{fork_name}}</a> from <a href=\"{{repo_url}}\">{{repo}}</a></h1>\n  {{description}}\n  <span class=\"date\">{{date}}</span>\n</li>";
 
   views["joined"] = "<li id=\"joined\" class=\"prominent\"><div class=\"well\">Joined: {{user.created_at_string}}</div></li>";
 
