@@ -398,7 +398,6 @@
     }
 
     App.prototype.renderIndex = function() {
-      console.log("in renderIndex");
       this.user = null;
       return this.content.html(this.view("index"));
     };
@@ -563,7 +562,6 @@
   })(Spine.Controller);
 
   $(function() {
-    console.log("in here");
     return window.app = new App({
       el: $(".container")
     });

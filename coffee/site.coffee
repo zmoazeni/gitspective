@@ -209,7 +209,6 @@ class window.App extends Spine.Controller
     Spine.Route.setup()
 
   renderIndex: =>
-    console.log("in renderIndex")
     @user = null
     @content.html(@view("index"))
 
@@ -316,5 +315,4 @@ class window.App extends Spine.Controller
 ##
 
 $ ->
-  console.log("in here")
   window.app = new App(el:$(".container"))
