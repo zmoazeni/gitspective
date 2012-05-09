@@ -4,12 +4,25 @@ section {
   position: relative;
 }
 
-/* line 7, ../sass/site.scss */
+/* line 8, ../sass/site.scss */
+header h1 {
+  margin-bottom: 15px;
+}
+/* line 12, ../sass/site.scss */
+header ul {
+  list-style: none;
+}
+/* line 14, ../sass/site.scss */
+header ul li {
+  margin-bottom: 5px;
+}
+
+/* line 20, ../sass/site.scss */
 #timeline-container {
   position: relative;
 }
 
-/* line 11, ../sass/site.scss */
+/* line 24, ../sass/site.scss */
 #timeline-line {
   background-color: #E08989;
   height: 100%;
@@ -20,19 +33,19 @@ section {
   left: 428px;
 }
 
-/* line 21, ../sass/site.scss */
+/* line 34, ../sass/site.scss */
 #timeline {
   width: 860px;
   margin: 0;
   list-style: none;
 }
-/* line 26, ../sass/site.scss */
+/* line 39, ../sass/site.scss */
 #timeline h1 {
   font-size: 14px;
   line-height: 14px;
   margin-bottom: 10px;
 }
-/* line 32, ../sass/site.scss */
+/* line 45, ../sass/site.scss */
 #timeline .item {
   width: 388px;
   margin: 10px;
@@ -43,42 +56,42 @@ section {
   word-wrap: break-word;
   padding: 5px 10px;
 }
-/* line 42, ../sass/site.scss */
+/* line 55, ../sass/site.scss */
 #timeline .item ol {
   list-style: none;
   margin: 0px;
   font-size: 12px;
   font-family: Monaco, "Courier New", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", monospace;
 }
-/* line 50, ../sass/site.scss */
+/* line 63, ../sass/site.scss */
 #timeline .gravatar {
   height: 80px;
   float: left;
 }
-/* line 55, ../sass/site.scss */
+/* line 68, ../sass/site.scss */
 #timeline .date {
   float: right;
 }
-/* line 59, ../sass/site.scss */
+/* line 72, ../sass/site.scss */
 #timeline .prominent {
   width: 600px;
   text-align: center;
   padding-left: 300px;
 }
-/* line 64, ../sass/site.scss */
+/* line 77, ../sass/site.scss */
 #timeline .prominent > div {
   width: 220px;
 }
-/* line 69, ../sass/site.scss */
+/* line 82, ../sass/site.scss */
 #timeline #spinner {
   height: 100px;
   padding-left: 270px;
 }
-/* line 74, ../sass/site.scss */
+/* line 87, ../sass/site.scss */
 #timeline .item, #timeline .prominent {
   margin-top: 20px;
 }
-/* line 78, ../sass/site.scss */
+/* line 91, ../sass/site.scss */
 #timeline .corner {
   display: block;
   height: 15px;
@@ -89,18 +102,18 @@ section {
   position: absolute;
   margin-top: 8px;
 }
-/* line 89, ../sass/site.scss */
+/* line 102, ../sass/site.scss */
 #timeline li[data-align=l] .corner {
   background: url("../img/right.png") no-repeat top right;
   margin-left: 398px;
 }
-/* line 94, ../sass/site.scss */
+/* line 107, ../sass/site.scss */
 #timeline li[data-align=r] .corner {
   background: url("../img/left.png") no-repeat top right;
   margin-left: -23px;
 }
 
-/* line 100, ../sass/site.scss */
+/* line 113, ../sass/site.scss */
 footer {
   clear: both;
 }

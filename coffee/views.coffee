@@ -24,7 +24,7 @@ views["index"] = """
 
 views["show"] = """
 <header class="page-header well row">
-  <div class="span1"><img src="{{user.avatar_url}}" alt="image of {{user.name}}"/></div>
+  <div class="span1 offset3"><img src="{{user.avatar_url}}" alt="image of {{user.name}}"/></div>
   <div class="span5">
     <h1>{{user.name}} <a href="{{user.html_url}}">{{user.login}}</a></h1>
     <ul>

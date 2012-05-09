@@ -4,6 +4,19 @@ section {
   position: relative;
 }
 
+header {
+  h1 {
+    margin-bottom: 15px;
+  }
+
+  ul {
+    list-style: none;
+    li {
+      margin-bottom: 5px;
+    }
+  }
+}
+
 #timeline-container {
   position: relative;
 }
