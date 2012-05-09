@@ -118,6 +118,41 @@
       return fetchHelper(page, [], callback);
     };
 
+    Event.prototype.viewType = function() {
+      switch (this.type) {
+        case "CreateEvent":
+          if (this.payload.ref_type === "repository") {
+            return "repo";
+          } else {
+            return "item";
+          }
+          break;
+        default:
+          return "item";
+      }
+    };
+
+    Event.prototype.viewInfo = function() {
+      var view;
+      view = this.viewType();
+      switch (view) {
+        case "item":
+          return [
+            view, {
+              id: this.id,
+              title: this.type
+            }
+          ];
+        case "repo":
+          return [
+            view, {
+              id: this.id,
+              title: this.repo.name
+            }
+          ];
+      }
+    };
+
     return Event;
 
   })(Spine.Model);
@@ -201,9 +236,9 @@
     App.prototype.appendEvents = function(events) {
       var _this = this;
       events.forEach(function(event) {
-        return _this.joined.before(_this.view("item", {
-          title: event.type
-        }));
+        var viewArgs, viewType, _ref;
+        _ref = event.viewInfo(), viewType = _ref[0], viewArgs = _ref[1];
+        return _this.joined.before(_this.view(viewType, viewArgs));
       });
       return this.refreshTimeline();
     };

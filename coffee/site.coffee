@@ -51,6 +51,23 @@ class Event extends Spine.Model
 
     fetchHelper(page, [], callback)
 
+  viewType: ->
+    switch @type
+      when "CreateEvent"
+        if @payload.ref_type == "repository"
+          "repo"
+        else
+          "item"
+
+      else "item"
+
+  viewInfo: ->
+    view = @viewType()
+    switch view
+      when "item" then [view, id:@id, title:@type]
+      when "repo" then [view, id:@id, title:@repo.name]
+
+
 window.Github = {User:User, Repo:Repo, Event:Event}
 
 ##
@@ -99,7 +116,8 @@ class window.App extends Spine.Controller
 
   appendEvents: (events) ->
     events.forEach (event) =>
-      @joined.before(@view("item", title:event.type))
+      [viewType, viewArgs] = event.viewInfo()
+      @joined.before(@view(viewType, viewArgs))
     @refreshTimeline()
 
   placeArrows: ->

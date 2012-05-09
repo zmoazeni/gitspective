@@ -29,7 +29,7 @@ section {
 /* line 26, ../sass/site.scss */
 #timeline .item {
   width: 408px;
-  margin: 10px 10px 10px 10px;
+  margin: 10px;
   float: left;
   background-color: #ffffff;
   border: solid 1px #B4BBCD;
@@ -40,8 +40,18 @@ section {
 /* line 37, ../sass/site.scss */
 #timeline .prominent {
   width: 600px;
+  text-align: center;
+  padding-left: 300px;
 }
-/* line 41, ../sass/site.scss */
+/* line 42, ../sass/site.scss */
+#timeline .prominent > div {
+  width: 220px;
+}
+/* line 47, ../sass/site.scss */
+#timeline .item, #timeline .prominent {
+  margin-top: 20px;
+}
+/* line 51, ../sass/site.scss */
 #timeline .corner {
   display: block;
   height: 15px;
@@ -52,18 +62,18 @@ section {
   position: absolute;
   margin-top: 8px;
 }
-/* line 52, ../sass/site.scss */
+/* line 62, ../sass/site.scss */
 #timeline li[data-align=l] .corner {
   background: url("../img/right.png") no-repeat top right;
   margin-left: 408px;
 }
-/* line 57, ../sass/site.scss */
+/* line 67, ../sass/site.scss */
 #timeline li[data-align=r] .corner {
   background: url("../img/left.png") no-repeat top right;
   margin-left: -13px;
 }
 
-/* line 63, ../sass/site.scss */
+/* line 73, ../sass/site.scss */
 footer {
   clear: both;
 }

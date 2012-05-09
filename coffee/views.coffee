@@ -50,11 +50,15 @@ views["show"] = """
 """
 
 views["item"] = """
-<li class="item"><span class="corner"></span>{{title}}</li>
+<li class="item" data-id="{{id}}"><span class="corner"></span>{{title}}</li>
+"""
+
+views["repo"] = """
+<li class="prominent"><div class="well">Created: {{title}}</div></li>
 """
 
 views["joined"] = """
-<li id="joined" class="prominent"><div class="well span2 offset3">Joined: {{user.created_at_string}}</div></li>
+<li id="joined" class="prominent"><div class="well">Joined: {{user.created_at_string}}</div></li>
 """
 
 views["static"] = """

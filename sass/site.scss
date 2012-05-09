@@ -25,7 +25,7 @@ section {
 
   .item {
     width: 408px;
-    margin: 10px 10px 10px 10px;
+    margin: 10px;
     float: left;
     background-color:#ffffff;
     border:solid 1px #B4BBCD;
@@ -36,6 +36,16 @@ section {
 
   .prominent {
     width: 600px;
+    text-align: center;
+    padding-left: 300px;
+
+    > div {
+      width: 220px;
+    }
+  }
+
+  .item, .prominent {
+    margin-top: 20px;
   }
 
   .corner {
