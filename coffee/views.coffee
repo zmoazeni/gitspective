@@ -111,7 +111,16 @@ views["pull_request_comment"] = """
 views["issue_comment"] = """
 <li class="item" data-id="{{id}}">
   <span class="corner"></span>
-  <h1>Commented on an <a href="{{url}}">issue</a> for <a href="{{repo_url}}">{{repo}}</a></h1>
+  <h1>Commented on an <a href="{{url}}">issue</a> on <a href="{{repo_url}}">{{repo}}</a></h1>
+  <blockquote>{{comment}}</blockquote>
+  <span class="date">{{date}}</span>
+</li>
+"""
+
+views["pull_request"] = """
+<li class="item" data-id="{{id}}">
+  <span class="corner"></span>
+  <h1>Opened a <a href="{{url}}">pull request</a> for <a href="{{repo_url}}">{{repo}}</a></h1>
   <blockquote>{{comment}}</blockquote>
   <span class="date">{{date}}</span>
 </li>

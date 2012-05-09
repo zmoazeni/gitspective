@@ -127,6 +127,13 @@
           return "pull_request_comment";
         case "IssueCommentEvent":
           return "issue_comment";
+        case "PullRequestEvent":
+          if (this.payload.action === "opened") {
+            return "pull_request";
+          } else {
+            return "skip";
+          }
+          break;
         case "CreateEvent":
           switch (this.payload.ref_type) {
             case "branch":
@@ -181,6 +188,16 @@
               id: this.id,
               url: this.payload.comment._links.html.href,
               comment: this.payload.comment.body,
+              repo_url: "https://github.com/" + this.repo.name,
+              repo: this.repo.name
+            }
+          ];
+        case "pull_request":
+          return [
+            view, {
+              id: this.id,
+              url: this.payload.pull_request._links.html.href,
+              comment: this.payload.pull_request.body,
               repo_url: "https://github.com/" + this.repo.name,
               repo: this.repo.name
             }

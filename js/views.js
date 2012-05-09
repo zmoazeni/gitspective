@@ -26,7 +26,9 @@
 
   views["pull_request_comment"] = "<li class=\"item\" data-id=\"{{id}}\">\n  <span class=\"corner\"></span>\n  <h1>Commented on a <a href=\"{{url}}\">pull request</a> for <a href=\"{{repo_url}}\">{{repo}}</a></h1>\n  <blockquote>{{comment}}</blockquote>\n  <span class=\"date\">{{date}}</span>\n</li>";
 
-  views["issue_comment"] = "<li class=\"item\" data-id=\"{{id}}\">\n  <span class=\"corner\"></span>\n  <h1>Commented on an <a href=\"{{url}}\">issue</a> for <a href=\"{{repo_url}}\">{{repo}}</a></h1>\n  <blockquote>{{comment}}</blockquote>\n  <span class=\"date\">{{date}}</span>\n</li>";
+  views["issue_comment"] = "<li class=\"item\" data-id=\"{{id}}\">\n  <span class=\"corner\"></span>\n  <h1>Commented on an <a href=\"{{url}}\">issue</a> on <a href=\"{{repo_url}}\">{{repo}}</a></h1>\n  <blockquote>{{comment}}</blockquote>\n  <span class=\"date\">{{date}}</span>\n</li>";
+
+  views["pull_request"] = "<li class=\"item\" data-id=\"{{id}}\">\n  <span class=\"corner\"></span>\n  <h1>Opened a <a href=\"{{url}}\">pull request</a> for <a href=\"{{repo_url}}\">{{repo}}</a></h1>\n  <blockquote>{{comment}}</blockquote>\n  <span class=\"date\">{{date}}</span>\n</li>";
 
   views["joined"] = "<li id=\"joined\" class=\"prominent\"><div class=\"well\">Joined: {{user.created_at_string}}</div></li>";
 

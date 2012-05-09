@@ -56,6 +56,8 @@ class Event extends Spine.Model
     switch @type
       when "PullRequestReviewCommentEvent" then "pull_request_comment"
       when "IssueCommentEvent" then "issue_comment"
+      when "PullRequestEvent"
+        if @payload.action == "opened" then "pull_request" else "skip"
       when "CreateEvent"
         switch @payload.ref_type
           when "branch"
@@ -83,6 +85,14 @@ class Event extends Spine.Model
           id:@id
           url:@payload.comment._links.html.href
           comment:@payload.comment.body
+          repo_url:"https://github.com/#{@repo.name}"
+          repo:@repo.name
+        ]
+      when "pull_request"
+        [view,
+          id:@id
+          url:@payload.pull_request._links.html.href
+          comment:@payload.pull_request.body
           repo_url:"https://github.com/#{@repo.name}"
           repo:@repo.name
         ]
