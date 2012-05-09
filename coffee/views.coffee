@@ -25,7 +25,6 @@ views["index"] = """
 </div>
 """
 
-
 views["show"] = """
 <header class="page-header well row">
   <div class="span1 offset3"><img src="{{user.avatar_url}}" alt="image of {{user.name}}"/></div>
@@ -107,7 +106,7 @@ views["repository"] = """
 """
 
 views["branch"] = """
-<li class="item hidden" data-id="{{id}}" data-type="branch">
+<li class="item" data-id="{{id}}" data-type="branch">
   <span class="corner"></span>
   <h1>Branched <a href="{{url}}">{{name}}</a> from <a href="{{repo_url}}">{{repo}}</a></h1>
   <span class="date">{{date}}</span>
