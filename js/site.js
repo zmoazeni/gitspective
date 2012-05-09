@@ -413,10 +413,10 @@
 
     App.prototype.fetchSomeEvents = function() {
       var _this = this;
+      this.startSpinner();
       return Event.fetchPages(this.user, this.page, function(_arg) {
         var events, page, sorted;
         page = _arg[0], events = _arg[1];
-        _this.startSpinner();
         _this.page = page;
         events.forEach(function(event) {
           return event.save();

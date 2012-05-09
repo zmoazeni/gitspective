@@ -193,7 +193,6 @@ class window.App extends Spine.Controller
   events:
     "submit form":"search"
     "click [data-show-more]":"toggleMore"
-    # "click [data-action=home], [data-action=budget]":"navigateTo"
 
   constructor: ->
     super
@@ -221,8 +220,8 @@ class window.App extends Spine.Controller
     @fetchSomeEvents()
 
   fetchSomeEvents: =>
+    @startSpinner()
     Event.fetchPages @user, @page, ([page, events]) =>
-      @startSpinner()
       @page = page
       events.forEach((event) -> event.save())
       sorted = events.sort((a, b) -> b.created_at_date() - a.created_at_date())
