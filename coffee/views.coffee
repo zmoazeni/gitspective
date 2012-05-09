@@ -15,10 +15,14 @@ views["error"] = """
 """
 
 views["index"] = """
+<div class="hero-unit">
+  <h1 class="offset1">A different perspective of a Github User</h1>
+
 <form class="form-inline">
   <input type="text" id="username-search" class="input-xlarge offset3" placeholder="Enter username...">
-  <button type="submit" class="btn btn-large">gitspect!</button>
+  <button type="submit" class="btn btn-large btn-primary">gitspect!</button>
 </form>
+</div>
 """
 
 

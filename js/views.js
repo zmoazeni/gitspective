@@ -14,7 +14,7 @@
 
   views["error"] = "<div class=\"alert alert-error span6\">\n  <a class=\"close\" data-dismiss=\"alert\" href=\"#\">x</a>\n  {{message}}\n</div>";
 
-  views["index"] = "<form class=\"form-inline\">\n  <input type=\"text\" id=\"username-search\" class=\"input-xlarge offset3\" placeholder=\"Enter username...\">\n  <button type=\"submit\" class=\"btn btn-large\">gitspect!</button>\n</form>";
+  views["index"] = "<div class=\"hero-unit\">\n  <h1 class=\"offset1\">A different perspective of a Github User</h1>\n\n<form class=\"form-inline\">\n  <input type=\"text\" id=\"username-search\" class=\"input-xlarge offset3\" placeholder=\"Enter username...\">\n  <button type=\"submit\" class=\"btn btn-large btn-primary\">gitspect!</button>\n</form>\n</div>";
 
   views["show"] = "<header class=\"page-header well row\">\n  <div class=\"span1 offset3\"><img src=\"{{user.avatar_url}}\" alt=\"image of {{user.name}}\"/></div>\n  <div class=\"span5\">\n    <h1>{{user.name}} <a href=\"{{user.html_url}}\">{{user.login}}</a></h1>\n    <ul>\n      {{#user.email}}\n        <li>Email: <a href=\"mailto:{{user.email}}\">{{user.email}}</a></li>\n      {{/user.email}}\n\n      {{#user.company}}\n        <li>Company: {{user.company}}</li>\n      {{/user.company}}\n\n      {{#user.created_at}}\n        <li>Joined: {{user.created_at_string}}</li>\n      {{/user.created_at}}\n    </ul>\n  </div>\n</header>\n\n<div id=\"timeline-container\" class=\"row offset1\">\n  <div id=\"timeline-line\">\n  </div>\n\n  <ol id=\"timeline\">\n  </ol>\n</div>";
 
