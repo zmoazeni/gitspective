@@ -16,7 +16,7 @@
 
   views["item"] = "<li class=\"item\" data-id=\"{{id}}\"><span class=\"corner\"></span>{{title}}</li>";
 
-  views["repo"] = "<li class=\"prominent\"><div class=\"well\">Created: {{title}}</div></li>";
+  views["repo"] = "<li class=\"prominent\" data-id=\"{{id}}\"><div class=\"well\">Created: {{title}}</div></li>";
 
   views["joined"] = "<li id=\"joined\" class=\"prominent\"><div class=\"well\">Joined: {{user.created_at_string}}</div></li>";
 

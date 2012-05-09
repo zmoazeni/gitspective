@@ -54,7 +54,7 @@ views["item"] = """
 """
 
 views["repo"] = """
-<li class="prominent"><div class="well">Created: {{title}}</div></li>
+<li class="prominent" data-id="{{id}}"><div class="well">Created: {{title}}</div></li>
 """
 
 views["joined"] = """
