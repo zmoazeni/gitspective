@@ -383,6 +383,7 @@
       App.__super__.constructor.apply(this, arguments);
       this.routes({
         "/": function() {
+          console.log("in index route");
           _this.user = null;
           return _this.content.html(_this.view("index"));
         },

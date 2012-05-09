@@ -198,6 +198,7 @@ class window.App extends Spine.Controller
     super
     @routes
       "/": () =>
+        console.log "in index route"
         @user = null
         @content.html(@view("index"))
 
