@@ -557,6 +557,7 @@
   })(Spine.Controller);
 
   $(function() {
+    console.log("in here");
     return window.app = new App({
       el: $(".container")
     });

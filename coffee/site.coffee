@@ -312,4 +312,5 @@ class window.App extends Spine.Controller
 ##
 
 $ ->
+  console.log("in here")
   window.app = new App(el:$(".container"))
