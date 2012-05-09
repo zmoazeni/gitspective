@@ -53,6 +53,18 @@ views["item"] = """
 <li class="item" data-id="{{id}}"><span class="corner"></span>{{title}}</li>
 """
 
+views["push"] = """
+<li class="item" data-id="{{id}}">
+  <span class="corner"></span>
+  <h1>Pushed {{num}} commit(s) to <a href="repo_url">{{repo}}</a></h1>
+  <ol>
+    {{#commits}}
+    <li><a href="{{commit_url}}">{{commit}}</a></li>
+    {{/commits}}
+  </ol>
+</li>
+"""
+
 views["repo"] = """
 <li class="prominent" data-id="{{id}}"><div class="well">Created: {{title}}</div></li>
 """

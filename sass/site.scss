@@ -23,15 +23,28 @@ section {
   margin: 0;
   list-style: none;
 
+  h1 {
+    font-size: 14px;
+    line-height: 14px;
+  }
+
   .item {
-    width: 408px;
+    width: 388px;
     margin: 10px;
     float: left;
     background-color:#ffffff;
     border:solid 1px #B4BBCD;
     min-height:50px;
-    text-align:justify;
     word-wrap:break-word;
+    padding: 5px 10px;
+
+    ol {
+      list-style: none;
+      padding: 10px 0px;
+      margin: 0px;
+      font-size: 12px;
+      font-family: Monaco,"Courier New","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace
+    }
   }
 
   .prominent {
@@ -61,12 +74,12 @@ section {
 
   li[data-align=l] .corner {
     background: url("../img/right.png") no-repeat top right;    
-    margin-left: 408px;
+    margin-left: 398px;
   }
 
   li[data-align=r] .corner {
     background: url("../img/left.png") no-repeat top right;    
-    margin-left: -13px;
+    margin-left: -23px;
   }
 }
 

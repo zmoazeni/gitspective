@@ -58,7 +58,7 @@ class Event extends Spine.Model
           "repo"
         else
           "item"
-
+      when "PushEvent" then "push"
       else "item"
 
   viewInfo: ->
@@ -66,6 +66,12 @@ class Event extends Spine.Model
     switch view
       when "item" then [view, id:@id, title:@type]
       when "repo" then [view, id:@id, title:@repo.name]
+      when "push"
+        commits = @payload.commits.map((c) => {commit:c.sha, commit_url:"https://github.com/#{@repo.name}/commit/#{c.sha}"})
+        if commits.length > 0
+          [view, id:@id, login:@actor.login, num:@payload.commits.length, commits:commits, repo_url:"https://github.com/#{@repo.name}", repo:@repo.name]
+        else
+          []
 
 
 window.Github = {User:User, Repo:Repo, Event:Event}
@@ -117,7 +123,7 @@ class window.App extends Spine.Controller
   appendEvents: (events) ->
     events.forEach (event) =>
       [viewType, viewArgs] = event.viewInfo()
-      @joined.before(@view(viewType, viewArgs))
+      @joined.before(@view(viewType, viewArgs)) if viewType
     @refreshTimeline()
 
   placeArrows: ->

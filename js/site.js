@@ -127,13 +127,16 @@
             return "item";
           }
           break;
+        case "PushEvent":
+          return "push";
         default:
           return "item";
       }
     };
 
     Event.prototype.viewInfo = function() {
-      var view;
+      var commits, view,
+        _this = this;
       view = this.viewType();
       switch (view) {
         case "item":
@@ -150,6 +153,27 @@
               title: this.repo.name
             }
           ];
+        case "push":
+          commits = this.payload.commits.map(function(c) {
+            return {
+              commit: c.sha,
+              commit_url: "https://github.com/" + _this.repo.name + "/commit/" + c.sha
+            };
+          });
+          if (commits.length > 0) {
+            return [
+              view, {
+                id: this.id,
+                login: this.actor.login,
+                num: this.payload.commits.length,
+                commits: commits,
+                repo_url: "https://github.com/" + this.repo.name,
+                repo: this.repo.name
+              }
+            ];
+          } else {
+            return [];
+          }
       }
     };
 
@@ -238,7 +262,9 @@
       events.forEach(function(event) {
         var viewArgs, viewType, _ref;
         _ref = event.viewInfo(), viewType = _ref[0], viewArgs = _ref[1];
-        return _this.joined.before(_this.view(viewType, viewArgs));
+        if (viewType) {
+          return _this.joined.before(_this.view(viewType, viewArgs));
+        }
       });
       return this.refreshTimeline();
     };
