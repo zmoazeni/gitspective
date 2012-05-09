@@ -56,6 +56,8 @@ class Event extends Spine.Model
     switch @type
       when "PullRequestReviewCommentEvent" then "pull_request_comment"
       when "IssueCommentEvent" then "issue_comment"
+      when "IssuesEvent"
+        if @payload.action == "opened" then "issue" else "skip"
       when "CommitCommentEvent" then "commit_comment"
       when "ForkEvent" then "fork"
       when "FollowEvent" then "follow"
@@ -75,6 +77,16 @@ class Event extends Spine.Model
     switch view
       when "item"
         [view, id:@id, title:@type, date:@created_at_short_string()]
+      when "issue"
+        [view,
+          id:@id
+          url:@payload.issue.html_url
+          title:@payload.issue.title
+          comment:@payload.issue.body
+          repo_url:"https://github.com/#{@repo.name}"
+          repo:@repo.name
+          date:@created_at_short_string(),
+        ]
       when "issue_comment"
         [view,
           id:@id

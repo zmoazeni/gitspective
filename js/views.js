@@ -30,6 +30,8 @@
 
   views["pull_request_comment"] = "<li class=\"item\" data-id=\"{{id}}\">\n  <span class=\"corner\"></span>\n  <h1>Commented on a <a href=\"{{url}}\">pull request</a> for <a href=\"{{repo_url}}\">{{repo}}</a></h1>\n  <blockquote>{{comment}}</blockquote>\n  <span class=\"date\">{{date}}</span>\n</li>";
 
+  views["issue"] = "<li class=\"item\" data-id=\"{{id}}\">\n  <span class=\"corner\"></span>\n  <h1>Opened an <a href=\"{{url}}\">issue</a> on <a href=\"{{repo_url}}\">{{repo}}</a></h1>\n  <blockquote>{{title}}</blockquote>\n  <blockquote>{{comment}}</blockquote>\n  <span class=\"date\">{{date}}</span>\n</li>";
+
   views["issue_comment"] = "<li class=\"item\" data-id=\"{{id}}\">\n  <span class=\"corner\"></span>\n  <h1>Commented on an <a href=\"{{url}}\">issue</a> on <a href=\"{{repo_url}}\">{{repo}}</a></h1>\n  <blockquote>{{comment}}</blockquote>\n  <span class=\"date\">{{date}}</span>\n</li>";
 
   views["commit_comment"] = "<li class=\"item\" data-id=\"{{id}}\">\n  <span class=\"corner\"></span>\n  <h1>Commented on a <a href=\"{{url}}\">commit</a> on <a href=\"{{repo_url}}\">{{repo}}</a></h1>\n  <blockquote>{{comment}}</blockquote>\n  <span class=\"date\">{{date}}</span>\n</li>";

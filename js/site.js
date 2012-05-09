@@ -127,6 +127,13 @@
           return "pull_request_comment";
         case "IssueCommentEvent":
           return "issue_comment";
+        case "IssuesEvent":
+          if (this.payload.action === "opened") {
+            return "issue";
+          } else {
+            return "skip";
+          }
+          break;
         case "CommitCommentEvent":
           return "commit_comment";
         case "ForkEvent":
@@ -175,6 +182,18 @@
             view, {
               id: this.id,
               title: this.type,
+              date: this.created_at_short_string()
+            }
+          ];
+        case "issue":
+          return [
+            view, {
+              id: this.id,
+              url: this.payload.issue.html_url,
+              title: this.payload.issue.title,
+              comment: this.payload.issue.body,
+              repo_url: "https://github.com/" + this.repo.name,
+              repo: this.repo.name,
               date: this.created_at_short_string()
             }
           ];

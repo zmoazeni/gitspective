@@ -111,6 +111,16 @@ views["pull_request_comment"] = """
 </li>
 """
 
+views["issue"] = """
+<li class="item" data-id="{{id}}">
+  <span class="corner"></span>
+  <h1>Opened an <a href="{{url}}">issue</a> on <a href="{{repo_url}}">{{repo}}</a></h1>
+  <blockquote>{{title}}</blockquote>
+  <blockquote>{{comment}}</blockquote>
+  <span class="date">{{date}}</span>
+</li>
+"""
+
 views["issue_comment"] = """
 <li class="item" data-id="{{id}}">
   <span class="corner"></span>
