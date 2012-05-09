@@ -65,9 +65,9 @@ class Event extends Spine.Model
       when "ForkEvent" then "fork"
       when "FollowEvent" then "follow"
       when "PullRequestEvent"
-        if @payload.action == "opened" then "pull_request" else "skip"
+        if @payload.action == "opened" && @payload.pull_request._links then "pull_request" else "skip"
       when "GistEvent"
-        if @payload.action == "create" then "gist" else "skip"
+        if @payload.action == "create" && @payload.gist then "gist" else "skip"
       when "CreateEvent"
         switch @payload.ref_type
           when "branch"
@@ -75,6 +75,7 @@ class Event extends Spine.Model
           else @payload.ref_type
       when "PushEvent"
         if @payload.commits?.length > 0 then "push" else "skip"
+      when "DeleteEvent" then "skip"
       else "item"
 
   viewInfo: ->

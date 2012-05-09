@@ -149,14 +149,14 @@
         case "FollowEvent":
           return "follow";
         case "PullRequestEvent":
-          if (this.payload.action === "opened") {
+          if (this.payload.action === "opened" && this.payload.pull_request._links) {
             return "pull_request";
           } else {
             return "skip";
           }
           break;
         case "GistEvent":
-          if (this.payload.action === "create") {
+          if (this.payload.action === "create" && this.payload.gist) {
             return "gist";
           } else {
             return "skip";
@@ -182,6 +182,8 @@
             return "skip";
           }
           break;
+        case "DeleteEvent":
+          return "skip";
         default:
           return "item";
       }

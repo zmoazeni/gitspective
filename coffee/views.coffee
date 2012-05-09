@@ -55,6 +55,7 @@ views["show"] = """
     <li class="active"><a href="#" data-type="branch">Branches</a></li>
     <li class="active"><a href="#" data-type="tag">Tags</a></li>
     <li class="active"><a href="#" data-type="follow">Follows</a></li>
+    <li class="active"><a href="#" data-type="issue_comment">Comments</a></li>
   </ul>
 </div>
 
@@ -149,7 +150,7 @@ views["gist"] = """
 """
 
 views["issue_comment"] = """
-<li class="item" data-id="{{id}}">
+<li class="item" data-id="{{id}}" data-type="issue_comment">
   <span class="corner"></span>
   <h1>Commented on an <a href="{{url}}">issue</a> on <a href="{{repo_url}}">{{repo}}</a></h1>
   <blockquote>{{comment}}</blockquote>
