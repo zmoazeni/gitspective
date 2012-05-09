@@ -398,6 +398,7 @@
     }
 
     App.prototype.renderIndex = function() {
+      console.log("in renderIndex");
       this.user = null;
       return this.content.html(this.view("index"));
     };

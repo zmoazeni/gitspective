@@ -209,6 +209,7 @@ class window.App extends Spine.Controller
     Spine.Route.setup()
 
   renderIndex: =>
+    console.log("in renderIndex")
     @user = null
     @content.html(@view("index"))
 
