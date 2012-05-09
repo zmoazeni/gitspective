@@ -58,6 +58,7 @@ class Event extends Spine.Model
       when "IssueCommentEvent" then "issue_comment"
       when "CommitCommentEvent" then "commit_comment"
       when "ForkEvent" then "fork"
+      when "FollowEvent" then "follow"
       when "PullRequestEvent"
         if @payload.action == "opened" then "pull_request" else "skip"
       when "CreateEvent"
@@ -118,6 +119,14 @@ class Event extends Spine.Model
           description:@payload.forkee.description
           repo_url:"https://github.com/#{@repo.name}"
           repo:@repo.name
+          date:@created_at_short_string()
+        ]
+      when "follow"
+        [view,
+          id:@id
+          url:@payload.target.html_url
+          name:@payload.target.name
+          gravatar:@payload.target.avatar_url
           date:@created_at_short_string()
         ]
       when "repository"

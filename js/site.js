@@ -131,6 +131,8 @@
           return "commit_comment";
         case "ForkEvent":
           return "fork";
+        case "FollowEvent":
+          return "follow";
         case "PullRequestEvent":
           if (this.payload.action === "opened") {
             return "pull_request";
@@ -229,6 +231,16 @@
               description: this.payload.forkee.description,
               repo_url: "https://github.com/" + this.repo.name,
               repo: this.repo.name,
+              date: this.created_at_short_string()
+            }
+          ];
+        case "follow":
+          return [
+            view, {
+              id: this.id,
+              url: this.payload.target.html_url,
+              name: this.payload.target.name,
+              gravatar: this.payload.target.avatar_url,
               date: this.created_at_short_string()
             }
           ];

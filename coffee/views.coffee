@@ -147,6 +147,17 @@ views["fork"] = """
 </li>
 """
 
+views["follow"] = """
+<li class="item" data-id="{{id}}">
+  <span class="corner"></span>
+  <h1>Started following <a href="{{url}}">{{name}}</a></h1>
+  {{#gravatar}}
+    <div><img class="gravatar" src="{{gravatar}}" /></div>
+  {{/gravatar}}
+  <span class="date">{{date}}</span>
+</li>
+"""
+
 views["joined"] = """
 <li id="joined" class="prominent"><div class="well">Joined: {{user.created_at_string}}</div></li>
 """
