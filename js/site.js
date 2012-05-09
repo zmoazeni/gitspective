@@ -159,10 +159,11 @@
             }
           ];
         case "push":
-          commits = this.payload.commits.map(function(c) {
+          commits = this.payload.commits.map(function(c, i) {
             return {
               commit: c.sha,
-              commit_url: "https://github.com/" + _this.repo.name + "/commit/" + c.sha
+              commit_url: "https://github.com/" + _this.repo.name + "/commit/" + c.sha,
+              hidden: i > 2
             };
           });
           if (commits.length > 0) {
@@ -174,7 +175,8 @@
                 commits: commits,
                 repo_url: "https://github.com/" + this.repo.name,
                 repo: this.repo.name,
-                date: this.created_at_short_string()
+                date: this.created_at_short_string(),
+                more: this.payload.commits.length > 3
               }
             ];
           } else {
@@ -207,13 +209,16 @@
     };
 
     App.prototype.events = {
-      "submit form": "search"
+      "submit form": "search",
+      "click [data-show-more]": "toggleMore"
     };
 
     function App() {
       this.search = __bind(this.search, this);
 
       this.fetchUser = __bind(this.fetchUser, this);
+
+      this.toggleMore = __bind(this.toggleMore, this);
 
       this.navigateTo = __bind(this.navigateTo, this);
 
@@ -299,6 +304,25 @@
     App.prototype.navigateTo = function(e) {
       e.preventDefault();
       return this.navigate($(e.target).attr("href"));
+    };
+
+    App.prototype.toggleMore = function(e) {
+      var $e, $parent, text;
+      e.preventDefault();
+      $e = $(e.target);
+      $parent = $(e.target).parents("li");
+      if ($e.data("toggled")) {
+        $parent.find("[data-more-placeholder]").show();
+        $parent.find("[data-more]").hide();
+      } else {
+        $parent.find("[data-more-placeholder]").hide();
+        $parent.find("[data-more]").show();
+      }
+      text = $e.text();
+      $e.text($e.data("alt"));
+      $e.data("alt", text);
+      $e.data("toggled", !$e.data("toggled"));
+      return this.refreshTimeline();
     };
 
     App.prototype.fetchUser = function(username, callback) {

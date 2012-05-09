@@ -61,11 +61,18 @@ views["push"] = """
 <li class="item" data-id="{{id}}">
   <span class="corner"></span>
   <h1>Pushed {{num}} commit(s) to <a href="repo_url">{{repo}}</a></h1>
-  <ol>
+  <ol class="commits">
     {{#commits}}
-    <li><a href="{{commit_url}}">{{commit}}</a></li>
+    <li {{#hidden}}style="display:none;" data-more{{/hidden}}><a href="{{commit_url}}">{{commit}}</a></li>
     {{/commits}}
+
+    {{#more}}
+      <li data-more-placeholder>...</li>
+    {{/more}}
   </ol>
+  {{#more}}
+  <div><a href="#" data-show-more data-alt="less" data-toggled=false>more</a></div>
+  {{/more}}
   <span class="date">{{date}}</span>
 </li>
 """

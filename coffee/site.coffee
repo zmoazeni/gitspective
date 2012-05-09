@@ -68,7 +68,7 @@ class Event extends Spine.Model
       when "item" then [view, id:@id, title:@type, date:@created_at_short_string()]
       when "repo" then [view, id:@id, title:@repo.name, date:@created_at_short_string()]
       when "push"
-        commits = @payload.commits.map((c) => {commit:c.sha, commit_url:"https://github.com/#{@repo.name}/commit/#{c.sha}"})
+        commits = @payload.commits.map((c, i) => {commit:c.sha, commit_url:"https://github.com/#{@repo.name}/commit/#{c.sha}", hidden:i > 2})
         if commits.length > 0
           [view,
             id:@id,
@@ -77,7 +77,8 @@ class Event extends Spine.Model
             commits:commits,
             repo_url:"https://github.com/#{@repo.name}",
             repo:@repo.name
-            date:@created_at_short_string()
+            date:@created_at_short_string(),
+            more:@payload.commits.length > 3
           ]
         else
           []
@@ -98,6 +99,7 @@ class window.App extends Spine.Controller
 
   events:
     "submit form":"search"
+    "click [data-show-more]":"toggleMore"
     # "click [data-action=home], [data-action=budget]":"navigateTo"
 
   constructor: ->
@@ -151,6 +153,22 @@ class window.App extends Spine.Controller
   navigateTo: (e) =>
     e.preventDefault()
     @navigate($(e.target).attr("href"))
+
+  toggleMore: (e) =>
+    e.preventDefault()
+    $e = $(e.target)
+    $parent = $(e.target).parents("li")
+    if $e.data("toggled")
+      $parent.find("[data-more-placeholder]").show()
+      $parent.find("[data-more]").hide()
+    else
+      $parent.find("[data-more-placeholder]").hide()
+      $parent.find("[data-more]").show()
+    text = $e.text()
+    $e.text($e.data("alt"))
+    $e.data("alt", text)
+    $e.data("toggled", !$e.data("toggled"))
+    @refreshTimeline()
 
   fetchUser: (username, callback) =>
     $.getJSON("https://api.github.com/users/#{username}?callback=?", (response) =>
