@@ -197,10 +197,8 @@ class window.App extends Spine.Controller
   constructor: ->
     super
     @routes
-      "/": () =>
-        console.log "in index route"
-        @user = null
-        @content.html(@view("index"))
+      "/": @renderIndex
+      "/gitspective": @renderIndex
 
       "/timeline/:user": (params) =>
         if @user
@@ -209,6 +207,10 @@ class window.App extends Spine.Controller
           @fetchUser(params.user, @renderUser)
 
     Spine.Route.setup()
+
+  renderIndex: =>
+    @user = null
+    @content.html(@view("index"))
 
   renderUser: (user) =>
     Repo.fetch(user)

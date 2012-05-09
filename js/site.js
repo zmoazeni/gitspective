@@ -379,14 +379,13 @@
 
       this.renderUser = __bind(this.renderUser, this);
 
+      this.renderIndex = __bind(this.renderIndex, this);
+
       var _this = this;
       App.__super__.constructor.apply(this, arguments);
       this.routes({
-        "/": function() {
-          console.log("in index route");
-          _this.user = null;
-          return _this.content.html(_this.view("index"));
-        },
+        "/": this.renderIndex,
+        "/gitspective": this.renderIndex,
         "/timeline/:user": function(params) {
           if (_this.user) {
             return _this.renderUser(_this.user);
@@ -397,6 +396,11 @@
       });
       Spine.Route.setup();
     }
+
+    App.prototype.renderIndex = function() {
+      this.user = null;
+      return this.content.html(this.view("index"));
+    };
 
     App.prototype.renderUser = function(user) {
       Repo.fetch(user);
