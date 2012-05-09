@@ -47,6 +47,17 @@ views["show"] = """
   </div>
 </header>
 
+<div class"row">
+  <ul class="nav nav-pills offset3">
+    <li class="active"><a href="#" data-type="push">Push</a></li>
+    <li class="active"><a href="#" data-type="fork">Forks</a></li>
+    <li class="active"><a href="#" data-type="gist">Gists</a></li>
+    <li class="active"><a href="#" data-type="branch">Branches</a></li>
+    <li class="active"><a href="#" data-type="tag">Tags</a></li>
+    <li class="active"><a href="#" data-type="follow">Follows</a></li>
+  </ul>
+</div>
+
 <div id="timeline-container" class="row offset1">
   <div id="timeline-line">
   </div>
@@ -69,7 +80,7 @@ views["item"] = """
 """
 
 views["push"] = """
-<li class="item" data-id="{{id}}">
+<li class="item" data-id="{{id}}" data-type="push">
   <span class="corner"></span>
   <h1>Pushed {{num}} commit(s) to <a href="repo_url">{{repo}}</a></h1>
   <ol class="commits">
@@ -95,7 +106,7 @@ views["repository"] = """
 """
 
 views["branch"] = """
-<li class="item" data-id="{{id}}">
+<li class="item hidden" data-id="{{id}}" data-type="branch">
   <span class="corner"></span>
   <h1>Branched <a href="{{url}}">{{name}}</a> from <a href="{{repo_url}}">{{repo}}</a></h1>
   <span class="date">{{date}}</span>
@@ -103,7 +114,7 @@ views["branch"] = """
 """
 
 views["tag"] = """
-<li class="item" data-id="{{id}}">
+<li class="item" data-id="{{id}}" data-type="tag">
   <span class="corner"></span>
   <h1>Tagged <a href="{{url}}">{{name}}</a> from <a href="{{repo_url}}">{{repo}}</a></h1>
   <span class="date">{{date}}</span>
@@ -130,7 +141,7 @@ views["issue"] = """
 """
 
 views["gist"] = """
-<li class="item" data-id="{{id}}">
+<li class="item" data-id="{{id}}" data-type="gist">
   <span class="corner"></span>
   <h1>Created a <a href="{{url}}">gist</a></h1>
   <span class="date">{{date}}</span>
@@ -165,7 +176,7 @@ views["pull_request"] = """
 """
 
 views["fork"] = """
-<li class="item" data-id="{{id}}">
+<li class="item" data-id="{{id}}" data-type="fork">
   <span class="corner"></span>
   <h1>Forked <a href="{{fork_url}}">{{fork_name}}</a> from <a href="{{repo_url}}">{{repo}}</a></h1>
   {{description}}
@@ -174,7 +185,7 @@ views["fork"] = """
 """
 
 views["follow"] = """
-<li class="item" data-id="{{id}}">
+<li class="item" data-id="{{id}}" data-type="follow">
   <span class="corner"></span>
   <h1>Started following <a href="{{url}}">{{name}}</a></h1>
   {{#gravatar}}

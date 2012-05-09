@@ -65,7 +65,6 @@
         _this = this;
       this.deleteAll();
       fetchHelper = function(page) {
-        console.log("Fetching repo page " + page);
         return $.getJSON("https://api.github.com/users/" + user.login + "/repos?page=" + page + "&callback=?", function(response) {
           $.each(response.data, function(i, repoData) {
             return Repo.create(repoData);
@@ -102,7 +101,6 @@
       max = page + 2;
       fetchHelper = function(currentPage, events, callback) {
         var url;
-        console.log("Fetching event page " + currentPage);
         url = "https://api.github.com/users/" + user.login + "/events?page=" + currentPage + "&callback=?";
         return $.getJSON(url, function(response) {
           $.each(response.data, function(i, eventData) {
@@ -359,13 +357,16 @@
 
     App.prototype.events = {
       "submit form": "search",
-      "click [data-show-more]": "toggleMore"
+      "click [data-show-more]": "toggleMore",
+      "click .nav-pills a": "toggleFilter"
     };
 
     function App() {
       this.search = __bind(this.search, this);
 
       this.fetchUser = __bind(this.fetchUser, this);
+
+      this.toggleFilter = __bind(this.toggleFilter, this);
 
       this.toggleMore = __bind(this.toggleMore, this);
 
@@ -411,7 +412,9 @@
         user: user
       }));
       this.refreshElements();
-      this.timeline.masonry();
+      this.timeline.masonry({
+        itemSelector: "#timeline li:not(.hidden)"
+      });
       this.page = 1;
       return this.fetchSomeEvents();
     };
@@ -448,14 +451,24 @@
     App.prototype.appendEvents = function(events) {
       var _this = this;
       events.forEach(function(event) {
-        var viewArgs, viewType, _ref;
+        var html, viewArgs, viewType, _ref;
         _ref = event.viewInfo(), viewType = _ref[0], viewArgs = _ref[1];
         if (viewType) {
-          return _this.joined.before(_this.view(viewType, viewArgs));
+          html = _this.view(viewType, viewArgs);
+          if (_this.isHidden(viewType)) {
+            html = $(html).addClass("hidden");
+          }
+          return _this.joined.before(html);
         }
       });
       this.refreshTimeline();
       return this.attachWaypoint();
+    };
+
+    App.prototype.isHidden = function(type) {
+      var $parent;
+      $parent = this.content.find(".nav-pills [data-type=" + type + "]").parent("li");
+      return $parent[0] && !$parent.hasClass("active");
     };
 
     App.prototype.attachWaypoint = function() {
@@ -515,6 +528,21 @@
       $e.data("alt", text);
       $e.data("toggled", !$e.data("toggled"));
       return this.refreshTimeline();
+    };
+
+    App.prototype.toggleFilter = function(e) {
+      var $e, $events, $parent;
+      e.preventDefault();
+      $e = $(e.target);
+      $parent = $e.parent("li");
+      $events = this.timeline.find("[data-type=" + ($e.data("type")) + "]");
+      if ($parent.hasClass("active")) {
+        $events.addClass("hidden");
+      } else {
+        $events.removeClass("hidden");
+      }
+      this.refreshTimeline();
+      return $parent.toggleClass("active");
     };
 
     App.prototype.fetchUser = function(username, callback) {

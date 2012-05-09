@@ -26,7 +26,6 @@ class Repo extends Spine.Model
   @fetch: (user) ->
     @deleteAll()
     fetchHelper = (page) =>
-      console.log("Fetching repo page #{page}")
       $.getJSON("https://api.github.com/users/#{user.login}/repos?page=#{page}&callback=?", (response) =>
         $.each(response.data, (i, repoData) -> Repo.create(repoData))
         fetchHelper(page + 1) if hasMorePages(response.meta)
@@ -40,7 +39,6 @@ class Event extends Spine.Model
   @fetchPages: (user, page, callback) ->
     max = page + 2 # pulls down 3 pages at a time
     fetchHelper = (currentPage, events, callback) =>
-      console.log("Fetching event page #{currentPage}")
       url = "https://api.github.com/users/#{user.login}/events?page=#{currentPage}&callback=?"
 
       $.getJSON url, (response) =>
@@ -193,6 +191,7 @@ class window.App extends Spine.Controller
   events:
     "submit form":"search"
     "click [data-show-more]":"toggleMore"
+    "click .nav-pills a":"toggleFilter"
 
   constructor: ->
     super
@@ -217,7 +216,7 @@ class window.App extends Spine.Controller
     @content.html(@view("show", user:user))
     @content.find("#timeline").append(@view("joined", user:user))
     @refreshElements() # this refreshes @joined and @timeline
-    @timeline.masonry()
+    @timeline.masonry(itemSelector:"#timeline li:not(.hidden)")
 
     @page = 1
     @fetchSomeEvents()
@@ -242,9 +241,16 @@ class window.App extends Spine.Controller
   appendEvents: (events) ->
     events.forEach (event) =>
       [viewType, viewArgs] = event.viewInfo()
-      @joined.before(@view(viewType, viewArgs)) if viewType
+      if viewType
+        html = @view(viewType, viewArgs)
+        html = $(html).addClass("hidden") if @isHidden(viewType)
+        @joined.before(html)
     @refreshTimeline()
     @attachWaypoint()
+
+  isHidden: (type) ->
+    $parent = @content.find(".nav-pills [data-type=#{type}]").parent("li")
+    $parent[0] && !$parent.hasClass("active")
 
   attachWaypoint: ->
     if @page != -1
@@ -285,6 +291,21 @@ class window.App extends Spine.Controller
     $e.data("alt", text)
     $e.data("toggled", !$e.data("toggled"))
     @refreshTimeline()
+
+  toggleFilter: (e) =>
+    e.preventDefault()
+    $e = $(e.target)
+    $parent = $e.parent("li")
+    $events = @timeline.find("[data-type=#{$e.data("type")}]")
+
+    if $parent.hasClass("active")
+      $events.addClass("hidden")
+
+    else
+      $events.removeClass("hidden")
+
+    @refreshTimeline()
+    $parent.toggleClass("active")
 
   fetchUser: (username, callback) =>
     $.getJSON("https://api.github.com/users/#{username}?callback=?", (response) =>
