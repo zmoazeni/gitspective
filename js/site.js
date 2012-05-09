@@ -96,12 +96,9 @@
 
     Event.include(TimeStamps);
 
-    Event.fetchPages = function(user, callback, page) {
+    Event.fetchPages = function(user, page, callback) {
       var fetchHelper, max,
         _this = this;
-      if (page == null) {
-        page = 1;
-      }
       max = page + 2;
       fetchHelper = function(currentPage, events, callback) {
         var url;
@@ -113,8 +110,10 @@
           });
           if (currentPage < max && hasMorePages(response.meta)) {
             return fetchHelper(currentPage + 1, events, callback);
-          } else {
+          } else if (hasMorePages(response.meta)) {
             return callback([currentPage + 1, events]);
+          } else {
+            return callback([-1, events]);
           }
         });
       };
@@ -122,11 +121,17 @@
     };
 
     Event.prototype.viewType = function() {
+      var _ref;
       switch (this.type) {
         case "PullRequestReviewCommentEvent":
           return "pull_request_comment";
         case "IssueCommentEvent":
-          return "issue_comment";
+          if (this.payload.issue) {
+            return "issue_comment";
+          } else {
+            return "skip";
+          }
+          break;
         case "IssuesEvent":
           if (this.payload.action === "opened") {
             return "issue";
@@ -135,7 +140,12 @@
           }
           break;
         case "CommitCommentEvent":
-          return "commit_comment";
+          if (this.payload.comment) {
+            return "commit_comment";
+          } else {
+            return "skip";
+          }
+          break;
         case "ForkEvent":
           return "fork";
         case "FollowEvent":
@@ -168,7 +178,7 @@
           }
           break;
         case "PushEvent":
-          if (this.payload.commits.length > 0) {
+          if (((_ref = this.payload.commits) != null ? _ref.length : void 0) > 0) {
             return "push";
           } else {
             return "skip";
@@ -343,7 +353,8 @@
       "#messages": "messages",
       "#content": "content",
       "#timeline": "timeline",
-      "#joined": "joined"
+      "#joined": "joined",
+      "#spinner": "spinner"
     };
 
     App.prototype.events = {
@@ -359,6 +370,12 @@
       this.toggleMore = __bind(this.toggleMore, this);
 
       this.navigateTo = __bind(this.navigateTo, this);
+
+      this.stopSpinner = __bind(this.stopSpinner, this);
+
+      this.startSpinner = __bind(this.startSpinner, this);
+
+      this.fetchSomeEvents = __bind(this.fetchSomeEvents, this);
 
       this.renderUser = __bind(this.renderUser, this);
 
@@ -381,7 +398,6 @@
     }
 
     App.prototype.renderUser = function(user) {
-      var _this = this;
       Repo.fetch(user);
       this.content.html(this.view("show", {
         user: user
@@ -392,9 +408,15 @@
       this.refreshElements();
       this.timeline.masonry();
       this.page = 1;
-      return Event.fetchPages(user, function(_arg) {
+      return this.fetchSomeEvents();
+    };
+
+    App.prototype.fetchSomeEvents = function() {
+      var _this = this;
+      return Event.fetchPages(this.user, this.page, function(_arg) {
         var events, page, sorted;
         page = _arg[0], events = _arg[1];
+        _this.startSpinner();
         _this.page = page;
         events.forEach(function(event) {
           return event.save();
@@ -402,8 +424,20 @@
         sorted = events.sort(function(a, b) {
           return b.created_at_date() - a.created_at_date();
         });
+        _this.stopSpinner();
         return _this.appendEvents(sorted);
       });
+    };
+
+    App.prototype.startSpinner = function() {
+      this.joined.before(this.view("spinner"));
+      this.refreshElements();
+      this.refreshTimeline();
+      return new Spinner().spin(this.spinner[0]);
+    };
+
+    App.prototype.stopSpinner = function() {
+      return this.spinner.remove();
     };
 
     App.prototype.appendEvents = function(events) {
@@ -415,7 +449,22 @@
           return _this.joined.before(_this.view(viewType, viewArgs));
         }
       });
-      return this.refreshTimeline();
+      this.refreshTimeline();
+      return this.attachWaypoint();
+    };
+
+    App.prototype.attachWaypoint = function() {
+      var _this = this;
+      if (this.page !== -1) {
+        return this.joined.waypoint(function(e, direction) {
+          if (direction === "down") {
+            return _this.fetchSomeEvents();
+          }
+        }, {
+          offset: 'bottom-in-view',
+          triggerOnce: true
+        });
+      }
     };
 
     App.prototype.placeArrows = function() {

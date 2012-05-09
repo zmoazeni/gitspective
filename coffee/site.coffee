@@ -37,7 +37,7 @@ class Event extends Spine.Model
   @configure "Event", "type", "public", "repo", "created_at", "actor", "id", "payload"
   @include TimeStamps
 
-  @fetchPages: (user, callback, page = 1) ->
+  @fetchPages: (user, page, callback) ->
     max = page + 2 # pulls down 3 pages at a time
     fetchHelper = (currentPage, events, callback) =>
       console.log("Fetching event page #{currentPage}")
@@ -47,18 +47,23 @@ class Event extends Spine.Model
         $.each(response.data, (i, eventData) -> events.push(new Event(eventData)))
         if currentPage < max && hasMorePages(response.meta)
           fetchHelper(currentPage + 1, events, callback)
-        else
+        else if hasMorePages(response.meta)
           callback([currentPage + 1, events])
+        else
+          callback([-1, events])
+
 
     fetchHelper(page, [], callback)
 
   viewType: ->
     switch @type
       when "PullRequestReviewCommentEvent" then "pull_request_comment"
-      when "IssueCommentEvent" then "issue_comment"
+      when "IssueCommentEvent"
+        if @payload.issue then "issue_comment" else "skip"
       when "IssuesEvent"
         if @payload.action == "opened" then "issue" else "skip"
-      when "CommitCommentEvent" then "commit_comment"
+      when "CommitCommentEvent"
+        if @payload.comment then "commit_comment" else "skip"
       when "ForkEvent" then "fork"
       when "FollowEvent" then "follow"
       when "PullRequestEvent"
@@ -71,7 +76,7 @@ class Event extends Spine.Model
             if @payload.ref == "master" then "skip" else "branch"
           else @payload.ref_type
       when "PushEvent"
-        if @payload.commits.length > 0 then "push" else "skip"
+        if @payload.commits?.length > 0 then "push" else "skip"
       else "item"
 
   viewInfo: ->
@@ -183,6 +188,7 @@ class window.App extends Spine.Controller
     "#content": "content"
     "#timeline":"timeline"
     "#joined":  "joined"
+    "#spinner": "spinner"
 
   events:
     "submit form":"search"
@@ -212,17 +218,38 @@ class window.App extends Spine.Controller
     @timeline.masonry()
 
     @page = 1
-    Event.fetchPages user, ([page, events]) =>
+    @fetchSomeEvents()
+
+  fetchSomeEvents: =>
+    Event.fetchPages @user, @page, ([page, events]) =>
+      @startSpinner()
       @page = page
       events.forEach((event) -> event.save())
       sorted = events.sort((a, b) -> b.created_at_date() - a.created_at_date())
+      @stopSpinner()
       @appendEvents(sorted)
+
+  startSpinner: =>
+    @joined.before(@view("spinner"))
+    @refreshElements()
+    @refreshTimeline()
+    new Spinner().spin(@spinner[0])
+
+  stopSpinner: => @spinner.remove()
 
   appendEvents: (events) ->
     events.forEach (event) =>
       [viewType, viewArgs] = event.viewInfo()
       @joined.before(@view(viewType, viewArgs)) if viewType
     @refreshTimeline()
+    @attachWaypoint()
+
+  attachWaypoint: ->
+    if @page != -1
+      @joined.waypoint (e, direction) =>
+        if direction == "down"
+          @fetchSomeEvents()
+      , {offset: 'bottom-in-view', triggerOnce:true}
 
   placeArrows: ->
     min_max = $.unique(@timeline.find(".item").map((e) -> parseInt($(this).css("left")) )).sort()

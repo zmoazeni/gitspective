@@ -70,10 +70,15 @@ section {
   width: 220px;
 }
 /* line 69, ../sass/site.scss */
+#timeline #spinner {
+  height: 100px;
+  padding-left: 270px;
+}
+/* line 74, ../sass/site.scss */
 #timeline .item, #timeline .prominent {
   margin-top: 20px;
 }
-/* line 73, ../sass/site.scss */
+/* line 78, ../sass/site.scss */
 #timeline .corner {
   display: block;
   height: 15px;
@@ -84,18 +89,18 @@ section {
   position: absolute;
   margin-top: 8px;
 }
-/* line 84, ../sass/site.scss */
+/* line 89, ../sass/site.scss */
 #timeline li[data-align=l] .corner {
   background: url("../img/right.png") no-repeat top right;
   margin-left: 398px;
 }
-/* line 89, ../sass/site.scss */
+/* line 94, ../sass/site.scss */
 #timeline li[data-align=r] .corner {
   background: url("../img/left.png") no-repeat top right;
   margin-left: -23px;
 }
 
-/* line 95, ../sass/site.scss */
+/* line 100, ../sass/site.scss */
 footer {
   clear: both;
 }
