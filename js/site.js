@@ -385,7 +385,7 @@
       App.__super__.constructor.apply(this, arguments);
       this.routes({
         "/": this.renderIndex,
-        "/gitspective": this.renderIndex,
+        "/gitspective/": this.renderIndex,
         "/timeline/:user": function(params) {
           if (_this.user) {
             return _this.renderUser(_this.user);

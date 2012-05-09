@@ -198,7 +198,7 @@ class window.App extends Spine.Controller
     super
     @routes
       "/": @renderIndex
-      "/gitspective": @renderIndex
+      "/gitspective/": @renderIndex
 
       "/timeline/:user": (params) =>
         if @user
