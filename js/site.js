@@ -125,6 +125,8 @@
       switch (this.type) {
         case "PullRequestReviewCommentEvent":
           return "pull_request_comment";
+        case "IssueCommentEvent":
+          return "issue_comment";
         case "CreateEvent":
           switch (this.payload.ref_type) {
             case "branch":
@@ -161,6 +163,16 @@
               id: this.id,
               title: this.type,
               date: this.created_at_short_string()
+            }
+          ];
+        case "issue_comment":
+          return [
+            view, {
+              id: this.id,
+              url: this.payload.issue.html_url,
+              comment: this.payload.comment.body,
+              repo_url: "https://github.com/" + this.repo.name,
+              repo: this.repo.name
             }
           ];
         case "pull_request_comment":
