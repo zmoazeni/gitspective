@@ -147,6 +147,13 @@
             return "skip";
           }
           break;
+        case "GistEvent":
+          if (this.payload.action === "create") {
+            return "gist";
+          } else {
+            return "skip";
+          }
+          break;
         case "CreateEvent":
           switch (this.payload.ref_type) {
             case "branch":
@@ -182,6 +189,14 @@
             view, {
               id: this.id,
               title: this.type,
+              date: this.created_at_short_string()
+            }
+          ];
+        case "gist":
+          return [
+            view, {
+              id: this.id,
+              url: this.payload.gist.html_url,
               date: this.created_at_short_string()
             }
           ];

@@ -121,6 +121,14 @@ views["issue"] = """
 </li>
 """
 
+views["gist"] = """
+<li class="item" data-id="{{id}}">
+  <span class="corner"></span>
+  <h1>Created a <a href="{{url}}">gist</a></h1>
+  <span class="date">{{date}}</span>
+</li>
+"""
+
 views["issue_comment"] = """
 <li class="item" data-id="{{id}}">
   <span class="corner"></span>

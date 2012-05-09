@@ -63,6 +63,8 @@ class Event extends Spine.Model
       when "FollowEvent" then "follow"
       when "PullRequestEvent"
         if @payload.action == "opened" then "pull_request" else "skip"
+      when "GistEvent"
+        if @payload.action == "create" then "gist" else "skip"
       when "CreateEvent"
         switch @payload.ref_type
           when "branch"
@@ -77,6 +79,8 @@ class Event extends Spine.Model
     switch view
       when "item"
         [view, id:@id, title:@type, date:@created_at_short_string()]
+      when "gist"
+        [view, id:@id, url:@payload.gist.html_url, date:@created_at_short_string()]
       when "issue"
         [view,
           id:@id
