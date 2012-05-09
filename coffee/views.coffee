@@ -86,7 +86,7 @@ views["repository"] = """
 views["branch"] = """
 <li class="item" data-id="{{id}}">
   <span class="corner"></span>
-  <h1>Branched <a href="{{url}}">{{name}}</a> from <a href="repo_url">{{repo}}</a></h1>
+  <h1>Branched <a href="{{url}}">{{name}}</a> from <a href="{{repo_url}}">{{repo}}</a></h1>
   <span class="date">{{date}}</span>
 </li>
 """
@@ -94,7 +94,16 @@ views["branch"] = """
 views["tag"] = """
 <li class="item" data-id="{{id}}">
   <span class="corner"></span>
-  <h1>Tagged <a href="{{url}}">{{name}}</a> from <a href="repo_url">{{repo}}</a></h1>
+  <h1>Tagged <a href="{{url}}">{{name}}</a> from <a href="{{repo_url}}">{{repo}}</a></h1>
+  <span class="date">{{date}}</span>
+</li>
+"""
+
+views["pull_request_comment"] = """
+<li class="item" data-id="{{id}}">
+  <span class="corner"></span>
+  <h1>Commented on a <a href="{{url}}">pull request</a> for <a href="{{repo_url}}">{{repo}}</a></h1>
+  <blockquote>{{comment}}</blockquote>
   <span class="date">{{date}}</span>
 </li>
 """

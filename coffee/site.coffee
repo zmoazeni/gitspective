@@ -54,6 +54,7 @@ class Event extends Spine.Model
 
   viewType: ->
     switch @type
+      when "PullRequestReviewCommentEvent" then "pull_request_comment"
       when "CreateEvent"
         switch @payload.ref_type
           when "branch"
@@ -68,6 +69,14 @@ class Event extends Spine.Model
     switch view
       when "item"
         [view, id:@id, title:@type, date:@created_at_short_string()]
+      when "pull_request_comment"
+        [view,
+          id:@id
+          url:@payload.comment._links.html.href
+          comment:@payload.comment.body
+          repo_url:"https://github.com/#{@repo.name}"
+          repo:@repo.name
+        ]
       when "repository"
         [view, id:@id, title:@repo.name, date:@created_at_short_string()]
       when "tag", "branch"
