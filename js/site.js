@@ -127,6 +127,8 @@
           return "pull_request_comment";
         case "IssueCommentEvent":
           return "issue_comment";
+        case "CommitCommentEvent":
+          return "commit_comment";
         case "PullRequestEvent":
           if (this.payload.action === "opened") {
             return "pull_request";
@@ -187,6 +189,16 @@
             view, {
               id: this.id,
               url: this.payload.comment._links.html.href,
+              comment: this.payload.comment.body,
+              repo_url: "https://github.com/" + this.repo.name,
+              repo: this.repo.name
+            }
+          ];
+        case "commit_comment":
+          return [
+            view, {
+              id: this.id,
+              url: this.payload.comment.html_url,
               comment: this.payload.comment.body,
               repo_url: "https://github.com/" + this.repo.name,
               repo: this.repo.name
