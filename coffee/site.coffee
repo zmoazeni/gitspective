@@ -12,6 +12,7 @@ parseISODate = (raw) -> Date.parse(raw.slice(0, raw.length - 1))
 TimeStamps = {
   created_at_date: -> parseISODate(@created_at)
   created_at_string: -> @created_at_date().toString('MMMM d, yyyy')
+  created_at_short_string: -> @created_at_date().toString('MMM d, yyyy')
 }
 
 class User extends Spine.Model
@@ -64,12 +65,20 @@ class Event extends Spine.Model
   viewInfo: ->
     view = @viewType()
     switch view
-      when "item" then [view, id:@id, title:@type]
-      when "repo" then [view, id:@id, title:@repo.name]
+      when "item" then [view, id:@id, title:@type, date:@created_at_short_string()]
+      when "repo" then [view, id:@id, title:@repo.name, date:@created_at_short_string()]
       when "push"
         commits = @payload.commits.map((c) => {commit:c.sha, commit_url:"https://github.com/#{@repo.name}/commit/#{c.sha}"})
         if commits.length > 0
-          [view, id:@id, login:@actor.login, num:@payload.commits.length, commits:commits, repo_url:"https://github.com/#{@repo.name}", repo:@repo.name]
+          [view,
+            id:@id,
+            login:@actor.login,
+            num:@payload.commits.length,
+            commits:commits,
+            repo_url:"https://github.com/#{@repo.name}",
+            repo:@repo.name
+            date:@created_at_short_string()
+          ]
         else
           []
 

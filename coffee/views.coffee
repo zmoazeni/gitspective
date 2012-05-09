@@ -50,7 +50,11 @@ views["show"] = """
 """
 
 views["item"] = """
-<li class="item" data-id="{{id}}"><span class="corner"></span>{{title}}</li>
+<li class="item" data-id="{{id}}">
+  <span class="corner"></span>
+  {{title}}
+  <span class="date">{{date}}</span>
+</li>
 """
 
 views["push"] = """
@@ -62,11 +66,14 @@ views["push"] = """
     <li><a href="{{commit_url}}">{{commit}}</a></li>
     {{/commits}}
   </ol>
+  <span class="date">{{date}}</span>
 </li>
 """
 
 views["repo"] = """
-<li class="prominent" data-id="{{id}}"><div class="well">Created: {{title}}</div></li>
+<li class="prominent" data-id="{{id}}">
+  <div class="well">Created: {{title}} <div>{{date}}</div></div>
+</li>
 """
 
 views["joined"] = """

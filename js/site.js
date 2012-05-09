@@ -22,6 +22,9 @@
     },
     created_at_string: function() {
       return this.created_at_date().toString('MMMM d, yyyy');
+    },
+    created_at_short_string: function() {
+      return this.created_at_date().toString('MMM d, yyyy');
     }
   };
 
@@ -143,14 +146,16 @@
           return [
             view, {
               id: this.id,
-              title: this.type
+              title: this.type,
+              date: this.created_at_short_string()
             }
           ];
         case "repo":
           return [
             view, {
               id: this.id,
-              title: this.repo.name
+              title: this.repo.name,
+              date: this.created_at_short_string()
             }
           ];
         case "push":
@@ -168,7 +173,8 @@
                 num: this.payload.commits.length,
                 commits: commits,
                 repo_url: "https://github.com/" + this.repo.name,
-                repo: this.repo.name
+                repo: this.repo.name,
+                date: this.created_at_short_string()
               }
             ];
           } else {

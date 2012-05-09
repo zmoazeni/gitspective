@@ -14,11 +14,11 @@
 
   views["show"] = "<header class=\"page-header well row\">\n  <div class=\"span1\"><img src=\"{{user.avatar_url}}\" alt=\"image of {{user.name}}\"/></div>\n  <div class=\"span5\">\n    <h1>{{user.name}} <a href=\"{{user.html_url}}\">{{user.login}}</a></h1>\n    <ul>\n      {{#user.email}}\n        <li>Email: <a href=\"mailto:{{user.email}}\">{{user.email}}</a></li>\n      {{/user.email}}\n\n      {{#user.company}}\n        <li>Company: {{user.company}}</li>\n      {{/user.company}}\n\n      {{#user.created_at}}\n        <li>Joined: {{user.created_at_string}}</li>\n      {{/user.created_at}}\n    </ul>\n  </div>\n</header>\n\n<div id=\"timeline-container\" class=\"row offset1\">\n  <div id=\"timeline-line\">\n  </div>\n\n  <ol id=\"timeline\">\n  </ol>\n</div>";
 
-  views["item"] = "<li class=\"item\" data-id=\"{{id}}\"><span class=\"corner\"></span>{{title}}</li>";
+  views["item"] = "<li class=\"item\" data-id=\"{{id}}\">\n  <span class=\"corner\"></span>\n  {{title}}\n  <span class=\"date\">{{date}}</span>\n</li>";
 
-  views["push"] = "<li class=\"item\" data-id=\"{{id}}\">\n  <span class=\"corner\"></span>\n  <h1>Pushed {{num}} commit(s) to <a href=\"repo_url\">{{repo}}</a></h1>\n  <ol>\n    {{#commits}}\n    <li><a href=\"{{commit_url}}\">{{commit}}</a></li>\n    {{/commits}}\n  </ol>\n</li>";
+  views["push"] = "<li class=\"item\" data-id=\"{{id}}\">\n  <span class=\"corner\"></span>\n  <h1>Pushed {{num}} commit(s) to <a href=\"repo_url\">{{repo}}</a></h1>\n  <ol>\n    {{#commits}}\n    <li><a href=\"{{commit_url}}\">{{commit}}</a></li>\n    {{/commits}}\n  </ol>\n  <span class=\"date\">{{date}}</span>\n</li>";
 
-  views["repo"] = "<li class=\"prominent\" data-id=\"{{id}}\"><div class=\"well\">Created: {{title}}</div></li>";
+  views["repo"] = "<li class=\"prominent\" data-id=\"{{id}}\">\n  <div class=\"well\">Created: {{title}} <div>{{date}}</div></div>\n</li>";
 
   views["joined"] = "<li id=\"joined\" class=\"prominent\"><div class=\"well\">Joined: {{user.created_at_string}}</div></li>";
 

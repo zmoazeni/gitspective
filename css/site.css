@@ -51,20 +51,24 @@ section {
   font-family: Monaco, "Courier New", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", monospace;
 }
 /* line 50, ../sass/site.scss */
+#timeline .date {
+  float: right;
+}
+/* line 54, ../sass/site.scss */
 #timeline .prominent {
   width: 600px;
   text-align: center;
   padding-left: 300px;
 }
-/* line 55, ../sass/site.scss */
+/* line 59, ../sass/site.scss */
 #timeline .prominent > div {
   width: 220px;
 }
-/* line 60, ../sass/site.scss */
+/* line 64, ../sass/site.scss */
 #timeline .item, #timeline .prominent {
   margin-top: 20px;
 }
-/* line 64, ../sass/site.scss */
+/* line 68, ../sass/site.scss */
 #timeline .corner {
   display: block;
   height: 15px;
@@ -75,18 +79,18 @@ section {
   position: absolute;
   margin-top: 8px;
 }
-/* line 75, ../sass/site.scss */
+/* line 79, ../sass/site.scss */
 #timeline li[data-align=l] .corner {
   background: url("../img/right.png") no-repeat top right;
   margin-left: 398px;
 }
-/* line 80, ../sass/site.scss */
+/* line 84, ../sass/site.scss */
 #timeline li[data-align=r] .corner {
   background: url("../img/left.png") no-repeat top right;
   margin-left: -23px;
 }
 
-/* line 86, ../sass/site.scss */
+/* line 90, ../sass/site.scss */
 footer {
   clear: both;
 }
