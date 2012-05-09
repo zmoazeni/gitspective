@@ -292,7 +292,8 @@
           return [
             view, {
               id: this.id,
-              title: this.repo.name,
+              repo: this.repo.name,
+              repo_url: "https://github.com/" + this.repo.name,
               date: this.created_at_short_string()
             }
           ];

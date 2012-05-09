@@ -102,7 +102,7 @@ views["push"] = """
 
 views["repository"] = """
 <li class="prominent" data-id="{{id}}">
-  <div class="well">Created: {{title}} <div>{{date}}</div></div>
+  <div class="well">Created: <a href="{{repo_url}}">{{repo}}</a> <div>{{date}}</div></div>
 </li>
 """
 

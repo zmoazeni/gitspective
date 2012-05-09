@@ -150,7 +150,12 @@ class Event extends Spine.Model
           date:@created_at_short_string()
         ]
       when "repository"
-        [view, id:@id, title:@repo.name, date:@created_at_short_string()]
+        [view,
+          id:@id
+          repo:@repo.name
+          repo_url:"https://github.com/#{@repo.name}"
+          date:@created_at_short_string()
+        ]
       when "tag", "branch"
         [view,
           id:@id,
