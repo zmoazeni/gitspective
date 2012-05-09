@@ -124,14 +124,25 @@
     Event.prototype.viewType = function() {
       switch (this.type) {
         case "CreateEvent":
-          if (this.payload.ref_type === "repository") {
-            return "repo";
-          } else {
-            return "item";
+          switch (this.payload.ref_type) {
+            case "branch":
+              if (this.payload.ref === "master") {
+                return "skip";
+              } else {
+                return "branch";
+              }
+              break;
+            default:
+              return this.payload.ref_type;
           }
           break;
         case "PushEvent":
-          return "push";
+          if (this.payload.commits.length > 0) {
+            return "push";
+          } else {
+            return "skip";
+          }
+          break;
         default:
           return "item";
       }
@@ -150,12 +161,24 @@
               date: this.created_at_short_string()
             }
           ];
-        case "repo":
+        case "repository":
           return [
             view, {
               id: this.id,
               title: this.repo.name,
               date: this.created_at_short_string()
+            }
+          ];
+        case "tag":
+        case "branch":
+          return [
+            view, {
+              id: this.id,
+              name: this.payload.ref,
+              url: "https://github.com/" + this.repo.name + "/tree/" + this.payload.ref,
+              date: this.created_at_short_string(),
+              repo_url: "https://github.com/" + this.repo.name,
+              repo: this.repo.name
             }
           ];
         case "push":
@@ -166,22 +189,20 @@
               hidden: i > 2
             };
           });
-          if (commits.length > 0) {
-            return [
-              view, {
-                id: this.id,
-                login: this.actor.login,
-                num: this.payload.commits.length,
-                commits: commits,
-                repo_url: "https://github.com/" + this.repo.name,
-                repo: this.repo.name,
-                date: this.created_at_short_string(),
-                more: this.payload.commits.length > 3
-              }
-            ];
-          } else {
-            return [];
-          }
+          return [
+            view, {
+              id: this.id,
+              login: this.actor.login,
+              num: this.payload.commits.length,
+              commits: commits,
+              repo_url: "https://github.com/" + this.repo.name,
+              repo: this.repo.name,
+              date: this.created_at_short_string(),
+              more: this.payload.commits.length > 3
+            }
+          ];
+        default:
+          return [];
       }
     };
 

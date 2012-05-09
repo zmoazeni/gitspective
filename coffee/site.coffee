@@ -55,33 +55,43 @@ class Event extends Spine.Model
   viewType: ->
     switch @type
       when "CreateEvent"
-        if @payload.ref_type == "repository"
-          "repo"
-        else
-          "item"
-      when "PushEvent" then "push"
+        switch @payload.ref_type
+          when "branch"
+            if @payload.ref == "master" then "skip" else "branch"
+          else @payload.ref_type
+      when "PushEvent"
+        if @payload.commits.length > 0 then "push" else "skip"
       else "item"
 
   viewInfo: ->
     view = @viewType()
     switch view
-      when "item" then [view, id:@id, title:@type, date:@created_at_short_string()]
-      when "repo" then [view, id:@id, title:@repo.name, date:@created_at_short_string()]
+      when "item"
+        [view, id:@id, title:@type, date:@created_at_short_string()]
+      when "repository"
+        [view, id:@id, title:@repo.name, date:@created_at_short_string()]
+      when "tag", "branch"
+        [view,
+          id:@id,
+          name:@payload.ref,
+          url:"https://github.com/#{@repo.name}/tree/#{@payload.ref}"
+          date:@created_at_short_string()
+          repo_url:"https://github.com/#{@repo.name}",
+          repo:@repo.name
+        ]
       when "push"
         commits = @payload.commits.map((c, i) => {commit:c.sha, commit_url:"https://github.com/#{@repo.name}/commit/#{c.sha}", hidden:i > 2})
-        if commits.length > 0
-          [view,
-            id:@id,
-            login:@actor.login,
-            num:@payload.commits.length,
-            commits:commits,
-            repo_url:"https://github.com/#{@repo.name}",
-            repo:@repo.name
-            date:@created_at_short_string(),
-            more:@payload.commits.length > 3
-          ]
-        else
-          []
+        [view,
+          id:@id,
+          login:@actor.login,
+          num:@payload.commits.length,
+          commits:commits,
+          repo_url:"https://github.com/#{@repo.name}",
+          repo:@repo.name
+          date:@created_at_short_string(),
+          more:@payload.commits.length > 3
+        ]
+      else []
 
 
 window.Github = {User:User, Repo:Repo, Event:Event}

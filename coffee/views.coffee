@@ -77,9 +77,25 @@ views["push"] = """
 </li>
 """
 
-views["repo"] = """
+views["repository"] = """
 <li class="prominent" data-id="{{id}}">
   <div class="well">Created: {{title}} <div>{{date}}</div></div>
+</li>
+"""
+
+views["branch"] = """
+<li class="item" data-id="{{id}}">
+  <span class="corner"></span>
+  <h1>Branched <a href="{{url}}">{{name}}</a> from <a href="repo_url">{{repo}}</a></h1>
+  <span class="date">{{date}}</span>
+</li>
+"""
+
+views["tag"] = """
+<li class="item" data-id="{{id}}">
+  <span class="corner"></span>
+  <h1>Tagged <a href="{{url}}">{{name}}</a> from <a href="repo_url">{{repo}}</a></h1>
+  <span class="date">{{date}}</span>
 </li>
 """
 

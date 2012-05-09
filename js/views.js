@@ -18,7 +18,11 @@
 
   views["push"] = "<li class=\"item\" data-id=\"{{id}}\">\n  <span class=\"corner\"></span>\n  <h1>Pushed {{num}} commit(s) to <a href=\"repo_url\">{{repo}}</a></h1>\n  <ol class=\"commits\">\n    {{#commits}}\n    <li {{#hidden}}style=\"display:none;\" data-more{{/hidden}}><a href=\"{{commit_url}}\">{{commit}}</a></li>\n    {{/commits}}\n\n    {{#more}}\n      <li data-more-placeholder>...</li>\n    {{/more}}\n  </ol>\n  {{#more}}\n  <div><a href=\"#\" data-show-more data-alt=\"less\" data-toggled=false>more</a></div>\n  {{/more}}\n  <span class=\"date\">{{date}}</span>\n</li>";
 
-  views["repo"] = "<li class=\"prominent\" data-id=\"{{id}}\">\n  <div class=\"well\">Created: {{title}} <div>{{date}}</div></div>\n</li>";
+  views["repository"] = "<li class=\"prominent\" data-id=\"{{id}}\">\n  <div class=\"well\">Created: {{title}} <div>{{date}}</div></div>\n</li>";
+
+  views["branch"] = "<li class=\"item\" data-id=\"{{id}}\">\n  <span class=\"corner\"></span>\n  <h1>Branched <a href=\"{{url}}\">{{name}}</a> from <a href=\"repo_url\">{{repo}}</a></h1>\n  <span class=\"date\">{{date}}</span>\n</li>";
+
+  views["tag"] = "<li class=\"item\" data-id=\"{{id}}\">\n  <span class=\"corner\"></span>\n  <h1>Tagged <a href=\"{{url}}\">{{name}}</a> from <a href=\"repo_url\">{{repo}}</a></h1>\n  <span class=\"date\">{{date}}</span>\n</li>";
 
   views["joined"] = "<li id=\"joined\" class=\"prominent\"><div class=\"well\">Joined: {{user.created_at_string}}</div></li>";
 

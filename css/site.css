@@ -30,8 +30,9 @@ section {
 #timeline h1 {
   font-size: 14px;
   line-height: 14px;
+  margin-bottom: 10px;
 }
-/* line 31, ../sass/site.scss */
+/* line 32, ../sass/site.scss */
 #timeline .item {
   width: 388px;
   margin: 10px;
@@ -42,10 +43,9 @@ section {
   word-wrap: break-word;
   padding: 5px 10px;
 }
-/* line 41, ../sass/site.scss */
+/* line 42, ../sass/site.scss */
 #timeline .item ol {
   list-style: none;
-  padding: 10px 0px;
   margin: 0px;
   font-size: 12px;
   font-family: Monaco, "Courier New", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", monospace;
