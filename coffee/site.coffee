@@ -55,7 +55,8 @@ class Event extends Spine.Model
 
   viewType: ->
     switch @type
-      when "PullRequestReviewCommentEvent" then "pull_request_comment"
+      when "PullRequestReviewCommentEvent"
+        if @payload.comment._links then "pull_request_comment" else "skip"
       when "IssueCommentEvent"
         if @payload.issue then "issue_comment" else "skip"
       when "IssuesEvent"

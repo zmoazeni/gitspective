@@ -122,7 +122,12 @@
       var _ref;
       switch (this.type) {
         case "PullRequestReviewCommentEvent":
-          return "pull_request_comment";
+          if (this.payload.comment._links) {
+            return "pull_request_comment";
+          } else {
+            return "skip";
+          }
+          break;
         case "IssueCommentEvent":
           if (this.payload.issue) {
             return "issue_comment";
