@@ -77,6 +77,7 @@ class Event extends Spine.Model
       when "PushEvent"
         if @payload.commits?.length > 0 then "push" else "skip"
       when "DeleteEvent" then "skip"
+      when "WatchEvent" then "watch"
       else "item"
 
   viewInfo: ->
@@ -148,6 +149,13 @@ class Event extends Spine.Model
           url:@payload.target.html_url
           name:@payload.target.name
           gravatar:@payload.target.avatar_url
+          date:@created_at_short_string()
+        ]
+      when "watch"
+        [view,
+          id:@id
+          repo:@repo.name
+          repo_url:"https://github.com/#{@repo.name}"
           date:@created_at_short_string()
         ]
       when "repository"

@@ -189,6 +189,8 @@
           break;
         case "DeleteEvent":
           return "skip";
+        case "WatchEvent":
+          return "watch";
         default:
           return "item";
       }
@@ -290,6 +292,15 @@
               url: this.payload.target.html_url,
               name: this.payload.target.name,
               gravatar: this.payload.target.avatar_url,
+              date: this.created_at_short_string()
+            }
+          ];
+        case "watch":
+          return [
+            view, {
+              id: this.id,
+              repo: this.repo.name,
+              repo_url: "https://github.com/" + this.repo.name,
               date: this.created_at_short_string()
             }
           ];

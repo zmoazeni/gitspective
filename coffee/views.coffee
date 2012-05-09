@@ -105,6 +105,14 @@ views["repository"] = """
 </li>
 """
 
+views["watch"] = """
+<li class="item" data-id="{{id}}" data-type="branch">
+  <span class="corner"></span>
+  <h1>Began watching <a href="{{repo_url}}">{{repo}}</a></h1>
+  <span class="date">{{date}}</span>
+</li>
+"""
+
 views["branch"] = """
 <li class="item" data-id="{{id}}" data-type="branch">
   <span class="corner"></span>
