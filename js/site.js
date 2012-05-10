@@ -191,13 +191,15 @@
           return "skip";
         case "WatchEvent":
           return "watch";
+        case "GollumEvent":
+          return "gollum";
         default:
           return "item";
       }
     };
 
     Event.prototype.viewInfo = function() {
-      var commits, view,
+      var commits, pages, view,
         _this = this;
       view = this.viewType();
       switch (view) {
@@ -343,6 +345,26 @@
               repo: this.repo.name,
               date: this.created_at_short_string(),
               more: this.payload.commits.length > 3
+            }
+          ];
+        case "gollum":
+          pages = this.payload.pages.map(function(p, i) {
+            return {
+              title: p.title,
+              url: p.html_url,
+              action: p.action,
+              hidden: i > 2
+            };
+          });
+          return [
+            view, {
+              id: this.id,
+              repo: this.repo.name,
+              repo_url: "https://github.com/" + this.repo.name,
+              pages: pages,
+              num: pages.length,
+              date: this.created_at_short_string(),
+              more: pages.length > 3
             }
           ];
         default:

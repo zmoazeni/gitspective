@@ -78,6 +78,7 @@ class Event extends Spine.Model
         if @payload.commits?.length > 0 then "push" else "skip"
       when "DeleteEvent" then "skip"
       when "WatchEvent" then "watch"
+      when "GollumEvent" then "gollum"
       else "item"
 
   viewInfo: ->
@@ -185,6 +186,17 @@ class Event extends Spine.Model
           repo:@repo.name
           date:@created_at_short_string(),
           more:@payload.commits.length > 3
+        ]
+      when "gollum"
+        pages = @payload.pages.map((p, i) => {title:p.title, url:p.html_url, action:p.action, hidden:i > 2})
+        [view,
+          id:@id
+          repo:@repo.name
+          repo_url:"https://github.com/#{@repo.name}"
+          pages:pages
+          num:pages.length
+          date:@created_at_short_string()
+          more:pages.length > 3
         ]
       else []
 

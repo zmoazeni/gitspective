@@ -99,6 +99,26 @@ views["push"] = """
 </li>
 """
 
+views["gollum"] = """
+<li class="item" data-id="{{id}}" data-type="push">
+  <span class="corner"></span>
+  <h1>Updated {{num}} page(s) for <a href="{{repo_url}}">{{repo}}</a></h1>
+  <ol class="commits">
+    {{#pages}}
+    <li {{#hidden}}style="display:none;" data-more{{/hidden}}>{{action}}: <a href="{{url}}">{{title}}</a></li>
+    {{/pages}}
+
+    {{#more}}
+      <li data-more-placeholder>...</li>
+    {{/more}}
+  </ol>
+  {{#more}}
+  <div><a href="#" data-show-more data-alt="less" data-toggled=false>more</a></div>
+  {{/more}}
+  <span class="date">{{date}}</span>
+</li>
+"""
+
 views["repository"] = """
 <li class="prominent" data-id="{{id}}">
   <div class="well">Created: <a href="{{repo_url}}">{{repo}}</a> <div>{{date}}</div></div>
