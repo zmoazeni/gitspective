@@ -172,7 +172,6 @@
         ForkEvent: "fork",
         FollowEvent: "follow",
         WatchEvent: "watch",
-        GollumEvent: "gollum",
         PublicEvent: "public",
         DeleteEvent: "skip",
         MemberEvent: "skip",
@@ -183,7 +182,7 @@
         return defaultTypes[this.type];
       }
       view = (function() {
-        var _ref;
+        var _ref, _ref1;
         switch (this.type) {
           case "PullRequestReviewCommentEvent":
             if (this.payload.comment._links) {
@@ -229,6 +228,11 @@
           case "PushEvent":
             if (((_ref = this.payload.commits) != null ? _ref.length : void 0) > 0) {
               return "push";
+            }
+            break;
+          case "GollumEvent":
+            if (((_ref1 = this.payload.pages) != null ? _ref1.length : void 0) > 0) {
+              return "gollum";
             }
             break;
           default:

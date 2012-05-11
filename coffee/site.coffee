@@ -89,7 +89,6 @@ class Event extends Spine.Model
       ForkEvent:  "fork"
       FollowEvent:"follow"
       WatchEvent: "watch"
-      GollumEvent:"gollum"
       PublicEvent:"public"
 
       DeleteEvent:  "skip"
@@ -120,6 +119,8 @@ class Event extends Spine.Model
           else @payload.ref_type
       when "PushEvent"
         "push" if @payload.commits?.length > 0
+      when "GollumEvent"
+        "gollum" if @payload.pages?.length > 0
       else "item"
 
     view || "skip"
