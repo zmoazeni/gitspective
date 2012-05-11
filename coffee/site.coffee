@@ -208,7 +208,12 @@ class Event extends Spine.Model
           repo:@repo.name
         ]
       when "push"
-        commits = @commits.map((c, i) => {commit:c.sha.slice(0, 5), commit_url:"https://github.com/#{@repo.name}/commit/#{c.sha}", message:c.message, hidden:i > 2})
+        commits = @commits.map (c, i) =>
+          commit:c.sha.slice(0, 5)
+          commit_url:"https://github.com/#{@repo.name}/commit/#{c.sha}"
+          message:c.message.split("\n")[0]
+          hidden:i > 2
+
         [view,
           id:@id,
           login:@actor.login,

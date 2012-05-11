@@ -380,7 +380,7 @@
             return {
               commit: c.sha.slice(0, 5),
               commit_url: "https://github.com/" + _this.repo.name + "/commit/" + c.sha,
-              message: c.message,
+              message: c.message.split("\n")[0],
               hidden: i > 2
             };
           });
