@@ -52,12 +52,12 @@ views["show"] = """
 <div class"row">
   <ul class="nav nav-pills">
     <li class="active"><a href="#" data-type="push">Push</a></li>
-    <li class="active"><a href="#" data-type="fork">Forks</a></li>
-    <li class="active"><a href="#" data-type="gist">Gists</a></li>
-    <li class="active"><a href="#" data-type="branch">Branches</a></li>
-    <li class="active"><a href="#" data-type="watch">Follows</a></li>
-    <li class="active"><a href="#" data-type="comment">Comments</a></li>
-    <li class="active"><a href="#" data-type="issue">Issues</a></li>
+    <li class="active"><a href="#" data-type="fork">Fork</a></li>
+    <li class="active"><a href="#" data-type="gist">Gist</a></li>
+    <li class="active"><a href="#" data-type="branch">Branch</a></li>
+    <li class="active"><a href="#" data-type="watch">Follow</a></li>
+    <li class="active"><a href="#" data-type="comment">Comment</a></li>
+    <li class="active"><a href="#" data-type="issue">Issue</a></li>
     <li class="active"><a href="#" data-type="item">Unstyled</a></li>
   </ul>
 </div>
