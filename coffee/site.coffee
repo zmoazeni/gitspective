@@ -91,8 +91,10 @@ class Event extends Spine.Model
       WatchEvent: "watch"
       GollumEvent:"gollum"
 
-      DeleteEvent:"skip"
-      MemberEvent:"skip"
+      DeleteEvent:  "skip"
+      MemberEvent:  "skip"
+      DownloadEvent:"skip"
+      TeamAddEvent: "skip"
     }
 
     return defaultTypes[@type] if defaultTypes[@type]

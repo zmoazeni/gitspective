@@ -174,7 +174,9 @@
         WatchEvent: "watch",
         GollumEvent: "gollum",
         DeleteEvent: "skip",
-        MemberEvent: "skip"
+        MemberEvent: "skip",
+        DownloadEvent: "skip",
+        TeamAddEvent: "skip"
       };
       if (defaultTypes[this.type]) {
         return defaultTypes[this.type];
