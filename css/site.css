@@ -78,35 +78,43 @@ header ul li {
   font-size: 12px;
   font-family: Monaco, "Courier New", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", monospace;
 }
-/* line 80, ../sass/site.scss */
+/* line 79, ../sass/site.scss */
+#timeline .item li {
+  line-height: 15px;
+}
+/* line 83, ../sass/site.scss */
+#timeline .item li ~ li {
+  margin-top: 5px;
+}
+/* line 88, ../sass/site.scss */
 #timeline .gravatar {
   height: 80px;
   float: left;
 }
-/* line 85, ../sass/site.scss */
+/* line 93, ../sass/site.scss */
 #timeline .date {
   float: right;
 }
-/* line 89, ../sass/site.scss */
+/* line 97, ../sass/site.scss */
 #timeline .prominent {
   width: 600px;
   text-align: center;
   padding-left: 300px;
 }
-/* line 94, ../sass/site.scss */
+/* line 102, ../sass/site.scss */
 #timeline .prominent > div {
   width: 220px;
 }
-/* line 99, ../sass/site.scss */
+/* line 107, ../sass/site.scss */
 #timeline #spinner {
   height: 100px;
   padding-left: 270px;
 }
-/* line 104, ../sass/site.scss */
+/* line 112, ../sass/site.scss */
 #timeline .item, #timeline .prominent {
   margin-top: 20px;
 }
-/* line 108, ../sass/site.scss */
+/* line 116, ../sass/site.scss */
 #timeline .corner {
   display: block;
   height: 15px;
@@ -117,18 +125,18 @@ header ul li {
   position: absolute;
   margin-top: 8px;
 }
-/* line 119, ../sass/site.scss */
+/* line 127, ../sass/site.scss */
 #timeline li[data-align=l] .corner {
   background: url("../img/right.png") no-repeat top right;
   margin-left: 398px;
 }
-/* line 124, ../sass/site.scss */
+/* line 132, ../sass/site.scss */
 #timeline li[data-align=r] .corner {
   background: url("../img/left.png") no-repeat top right;
   margin-left: -23px;
 }
 
-/* line 130, ../sass/site.scss */
+/* line 138, ../sass/site.scss */
 footer {
   clear: both;
 }

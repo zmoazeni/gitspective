@@ -85,7 +85,7 @@ views["push"] = """
   <h1>Pushed {{num}} commit(s) to <a href="{{repo_url}}">{{repo}}</a></h1>
   <ol class="commits">
     {{#commits}}
-    <li {{#hidden}}style="display:none;" data-more{{/hidden}}><a href="{{commit_url}}">{{commit}}</a></li>
+    <li {{#hidden}}style="display:none;" data-more{{/hidden}}><a href="{{commit_url}}">{{commit}} - {{message}}</a></li>
     {{/commits}}
 
     {{#more}}

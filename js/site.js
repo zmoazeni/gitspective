@@ -378,8 +378,9 @@
         case "push":
           commits = this.commits.map(function(c, i) {
             return {
-              commit: c.sha,
+              commit: c.sha.slice(0, 5),
               commit_url: "https://github.com/" + _this.repo.name + "/commit/" + c.sha,
+              message: c.message,
               hidden: i > 2
             };
           });

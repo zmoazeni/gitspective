@@ -75,6 +75,14 @@ header {
       font-size: 12px;
       font-family: Monaco,"Courier New","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace
     }
+
+    li {
+      line-height: 15px;
+    }
+
+    li ~ li {
+      margin-top: 5px;
+    }
   }
 
   .gravatar {
