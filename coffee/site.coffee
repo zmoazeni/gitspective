@@ -196,6 +196,7 @@ class Event extends Spine.Model
           pages:pages
           num:pages.length
           more:pages.length > 3
+          type:"push"
         }
       else null
 

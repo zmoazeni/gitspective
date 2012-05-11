@@ -328,7 +328,8 @@
             return {
               pages: pages,
               num: pages.length,
-              more: pages.length > 3
+              more: pages.length > 3,
+              type: "push"
             };
           default:
             return null;
