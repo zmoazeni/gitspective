@@ -247,177 +247,110 @@
     };
 
     Event.prototype.viewInfo = function() {
-      var commits, pages, view,
-        _this = this;
+      var commits, context, pages, view;
       view = this.viewType();
-      switch (view) {
-        case "item":
-          return [
-            view, {
-              id: this.id,
-              title: this.type,
-              date: this.created_at_short_string()
-            }
-          ];
-        case "gist":
-          return [
-            view, {
-              id: this.id,
-              url: this.payload.gist.html_url,
-              date: this.created_at_short_string()
-            }
-          ];
-        case "issue":
-          return [
-            view, {
-              id: this.id,
+      context = (function() {
+        var _this = this;
+        switch (view) {
+          case "repository":
+          case "watch":
+            return {};
+          case "item":
+            return {
+              title: this.type
+            };
+          case "gist":
+            return {
+              url: this.payload.gist.html_url
+            };
+          case "issue":
+            return {
               url: this.payload.issue.html_url,
               title: this.payload.issue.title,
-              comment: this.payload.issue.body,
-              repo_url: "https://github.com/" + this.repo.name,
-              repo: this.repo.name,
-              date: this.created_at_short_string()
-            }
-          ];
-        case "issue_comment":
-          return [
-            view, {
-              id: this.id,
+              comment: this.payload.issue.body
+            };
+          case "issue_comment":
+            return {
               url: this.payload.issue.html_url,
-              comment: this.payload.comment.body,
-              repo_url: "https://github.com/" + this.repo.name,
-              repo: this.repo.name,
-              date: this.created_at_short_string()
-            }
-          ];
-        case "pull_request_comment":
-          return [
-            view, {
-              id: this.id,
-              url: this.payload.comment._links.html.href,
-              comment: this.payload.comment.body,
-              repo_url: "https://github.com/" + this.repo.name,
-              repo: this.repo.name,
-              date: this.created_at_short_string()
-            }
-          ];
-        case "commit_comment":
-          return [
-            view, {
-              id: this.id,
+              comment: this.payload.comment.body
+            };
+          case "commit_comment":
+            return {
               url: this.payload.comment.html_url,
-              comment: this.payload.comment.body,
-              repo_url: "https://github.com/" + this.repo.name,
-              repo: this.repo.name,
-              date: this.created_at_short_string()
-            }
-          ];
-        case "pull_request":
-          return [
-            view, {
-              id: this.id,
+              comment: this.payload.comment.body
+            };
+          case "pull_request_comment":
+            return {
+              url: this.payload.comment._links.html.href,
+              comment: this.payload.comment.body
+            };
+          case "pull_request":
+            return {
               url: this.payload.pull_request._links.html.href,
-              comment: this.payload.pull_request.body,
-              repo_url: "https://github.com/" + this.repo.name,
-              repo: this.repo.name,
-              date: this.created_at_short_string()
-            }
-          ];
-        case "fork":
-          return [
-            view, {
-              id: this.id,
+              comment: this.payload.pull_request.body
+            };
+          case "fork":
+            return {
               fork_url: this.payload.forkee.html_url,
               fork_name: "" + this.actor.login + "/" + this.payload.forkee.name,
-              description: this.payload.forkee.description,
-              repo_url: "https://github.com/" + this.repo.name,
-              repo: this.repo.name,
-              date: this.created_at_short_string()
-            }
-          ];
-        case "follow":
-          return [
-            view, {
-              id: this.id,
+              description: this.payload.forkee.description
+            };
+          case "follow":
+            return {
               url: this.payload.target.html_url,
               name: this.payload.target.name,
-              gravatar: this.payload.target.avatar_url,
-              date: this.created_at_short_string()
-            }
-          ];
-        case "watch":
-          return [
-            view, {
-              id: this.id,
-              repo: this.repo.name,
-              repo_url: "https://github.com/" + this.repo.name,
-              date: this.created_at_short_string()
-            }
-          ];
-        case "repository":
-          return [
-            view, {
-              id: this.id,
-              repo: this.repo.name,
-              repo_url: "https://github.com/" + this.repo.name,
-              date: this.created_at_short_string()
-            }
-          ];
-        case "tag":
-        case "branch":
-          return [
-            view, {
-              id: this.id,
-              name: this.payload.ref,
-              url: "https://github.com/" + this.repo.name + "/tree/" + this.payload.ref,
-              date: this.created_at_short_string(),
-              repo_url: "https://github.com/" + this.repo.name,
-              repo: this.repo.name
-            }
-          ];
-        case "push":
-          commits = this.commits.map(function(c, i) {
-            return {
-              commit: c.sha.slice(0, 5),
-              commit_url: "https://github.com/" + _this.repo.name + "/commit/" + c.sha,
-              message: c.message.split("\n")[0],
-              hidden: i > 2
+              gravatar: this.payload.target.avatar_url
             };
-          });
-          return [
-            view, {
-              id: this.id,
+          case "tag":
+          case "branch":
+            return {
+              name: this.payload.ref,
+              url: "https://github.com/" + this.repo.name + "/tree/" + this.payload.ref
+            };
+          case "push":
+            commits = this.commits.map(function(c, i) {
+              return {
+                commit: c.sha.slice(0, 5),
+                commit_url: "https://github.com/" + _this.repo.name + "/commit/" + c.sha,
+                message: c.message.split("\n")[0],
+                hidden: i > 2
+              };
+            });
+            return {
               login: this.actor.login,
               num: commits.length,
               commits: commits,
-              repo_url: "https://github.com/" + this.repo.name,
-              repo: this.repo.name,
-              date: this.created_at_short_string(),
               more: commits.length > 3
-            }
-          ];
-        case "gollum":
-          pages = this.payload.pages.map(function(p, i) {
-            return {
-              title: p.title,
-              url: p.html_url,
-              action: p.action,
-              hidden: i > 2
             };
-          });
-          return [
-            view, {
-              id: this.id,
-              repo: this.repo.name,
-              repo_url: "https://github.com/" + this.repo.name,
+          case "gollum":
+            pages = this.payload.pages.map(function(p, i) {
+              return {
+                title: p.title,
+                url: p.html_url,
+                action: p.action,
+                hidden: i > 2
+              };
+            });
+            return {
               pages: pages,
               num: pages.length,
-              date: this.created_at_short_string(),
               more: pages.length > 3
-            }
-          ];
-        default:
-          return [];
+            };
+          default:
+            return null;
+        }
+      }).call(this);
+      if (context) {
+        return [
+          view, $.extend(context, {
+            id: this.id,
+            repo: this.repo.name,
+            repo_url: "https://github.com/" + this.repo.name,
+            date: this.created_at_short_string()
+          })
+        ];
+      } else {
+        return [];
       }
     };
 

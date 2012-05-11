@@ -115,98 +115,56 @@ class Event extends Spine.Model
 
   viewInfo: ->
     view = @viewType()
-    switch view
+    context = switch view
+      when "repository", "watch"
+        {}
       when "item"
-        [view, id:@id, title:@type, date:@created_at_short_string()]
+        {title:@type}
       when "gist"
-        [view, id:@id, url:@payload.gist.html_url, date:@created_at_short_string()]
+        {url:@payload.gist.html_url}
       when "issue"
-        [view,
-          id:@id
+        {
           url:@payload.issue.html_url
           title:@payload.issue.title
           comment:@payload.issue.body
-          repo_url:"https://github.com/#{@repo.name}"
-          repo:@repo.name
-          date:@created_at_short_string(),
-        ]
+        }
       when "issue_comment"
-        [view,
-          id:@id
+        {
           url:@payload.issue.html_url
           comment:@payload.comment.body
-          repo_url:"https://github.com/#{@repo.name}"
-          repo:@repo.name
-          date:@created_at_short_string(),
-        ]
-      when "pull_request_comment"
-        [view,
-          id:@id
-          url:@payload.comment._links.html.href
-          comment:@payload.comment.body
-          repo_url:"https://github.com/#{@repo.name}"
-          repo:@repo.name
-          date:@created_at_short_string(),
-        ]
+        }
       when "commit_comment"
-        [view,
-          id:@id
+        {
           url:@payload.comment.html_url
           comment:@payload.comment.body
-          repo_url:"https://github.com/#{@repo.name}"
-          repo:@repo.name
-          date:@created_at_short_string(),
-        ]
+        }
+      when "pull_request_comment"
+        {
+          url:@payload.comment._links.html.href
+          comment:@payload.comment.body
+        }
       when "pull_request"
-        [view,
-          id:@id
+        {
           url:@payload.pull_request._links.html.href
           comment:@payload.pull_request.body
-          repo_url:"https://github.com/#{@repo.name}"
-          repo:@repo.name
-          date:@created_at_short_string(),
-        ]
+        }
       when "fork"
-        [view,
-          id:@id
+        {
           fork_url:@payload.forkee.html_url
           fork_name:"#{@actor.login}/#{@payload.forkee.name}"
           description:@payload.forkee.description
-          repo_url:"https://github.com/#{@repo.name}"
-          repo:@repo.name
-          date:@created_at_short_string()
-        ]
+        }
       when "follow"
-        [view,
-          id:@id
+        {
           url:@payload.target.html_url
           name:@payload.target.name
           gravatar:@payload.target.avatar_url
-          date:@created_at_short_string()
-        ]
-      when "watch"
-        [view,
-          id:@id
-          repo:@repo.name
-          repo_url:"https://github.com/#{@repo.name}"
-          date:@created_at_short_string()
-        ]
-      when "repository"
-        [view,
-          id:@id
-          repo:@repo.name
-          repo_url:"https://github.com/#{@repo.name}"
-          date:@created_at_short_string()
-        ]
+        }
       when "tag", "branch"
-        [view,
-          id:@id,
-          name:@payload.ref,
+        {
+          name:@payload.ref
           url:"https://github.com/#{@repo.name}/tree/#{@payload.ref}"
-          date:@created_at_short_string()
-          repo_url:"https://github.com/#{@repo.name}",
-          repo:@repo.name
-        ]
+        }
       when "push"
         commits = @commits.map (c, i) =>
           commit:c.sha.slice(0, 5)
@@ -214,28 +172,30 @@ class Event extends Spine.Model
           message:c.message.split("\n")[0]
           hidden:i > 2
 
-        [view,
-          id:@id,
-          login:@actor.login,
-          num:commits.length,
-          commits:commits,
-          repo_url:"https://github.com/#{@repo.name}",
-          repo:@repo.name
-          date:@created_at_short_string(),
+        {
+          login:@actor.login
+          num:commits.length
+          commits:commits
           more:commits.length > 3
-        ]
+        }
       when "gollum"
         pages = @payload.pages.map((p, i) => {title:p.title, url:p.html_url, action:p.action, hidden:i > 2})
-        [view,
-          id:@id
-          repo:@repo.name
-          repo_url:"https://github.com/#{@repo.name}"
+        {
           pages:pages
           num:pages.length
-          date:@created_at_short_string()
           more:pages.length > 3
-        ]
-      else []
+        }
+      else null
+
+    if context
+      [view, $.extend(context,
+        id:@id
+        repo:@repo.name
+        repo_url:"https://github.com/#{@repo.name}"
+        date:@created_at_short_string()
+      )]
+    else
+      []
 
 
 window.Github = {User:User, Repo:Repo, Event:Event}
