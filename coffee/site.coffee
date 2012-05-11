@@ -33,7 +33,7 @@ class Repo extends Spine.Model
     fetchHelper(1)
 
 class Event extends Spine.Model
-  @configure "Event", "type", "public", "repo", "created_at", "actor", "id", "payload"
+  @configure "Event", "type", "public", "repo", "created_at", "actor", "id", "payload", "commits"
   @include TimeStamps
 
   @fetchPages: (user, page, callback) ->
@@ -45,13 +45,45 @@ class Event extends Spine.Model
         $.each(response.data, (i, eventData) -> events.push(new Event(eventData)))
         if currentPage < max && hasMorePages(response.meta)
           fetchHelper(currentPage + 1, events, callback)
-        else if hasMorePages(response.meta)
-          callback([currentPage + 1, events])
         else
-          callback([-1, events])
+          consolidated = @consolidateEvents(events)
+          if hasMorePages(response.meta)
+            callback([currentPage + 1, consolidated])
+          else
+            callback([-1, consolidated])
 
 
     fetchHelper(page, [], callback)
+
+  @consolidateEvents: (events) ->
+    [otherEvents, pushEvents] = [[], []]
+    for e in events
+      if e.type == "PushEvent" then pushEvents.push(e) else otherEvents.push(e)
+
+    groups = {}
+    for e in pushEvents
+      groups[e.groupKey()] ||= []
+      groups[e.groupKey()].push(e)
+
+    for _, events of groups
+      keptEvent = events.shift()
+      keptEvent.addCommits(keptEvent.payload?.commits)
+      for e in events
+        keptEvent.addCommits(e.payload?.commits)
+
+      otherEvents.push(keptEvent)
+
+    otherEvents
+
+  constructor: (args) ->
+    super(args)
+    @commits ||= []
+
+  groupKey: ->
+    "#{@repo.name}-#{@created_at_short_string()}"
+
+  addCommits: (newCommits) ->
+    newCommits.forEach((e) => @commits.push(e)) if newCommits
 
   viewType: ->
     switch @type
@@ -176,16 +208,16 @@ class Event extends Spine.Model
           repo:@repo.name
         ]
       when "push"
-        commits = @payload.commits.map((c, i) => {commit:c.sha, commit_url:"https://github.com/#{@repo.name}/commit/#{c.sha}", hidden:i > 2})
+        commits = @commits.map((c, i) => {commit:c.sha, commit_url:"https://github.com/#{@repo.name}/commit/#{c.sha}", hidden:i > 2})
         [view,
           id:@id,
           login:@actor.login,
-          num:@payload.commits.length,
+          num:commits.length,
           commits:commits,
           repo_url:"https://github.com/#{@repo.name}",
           repo:@repo.name
           date:@created_at_short_string(),
-          more:@payload.commits.length > 3
+          more:commits.length > 3
         ]
       when "gollum"
         pages = @payload.pages.map((p, i) => {title:p.title, url:p.html_url, action:p.action, hidden:i > 2})

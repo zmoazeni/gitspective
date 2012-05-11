@@ -87,11 +87,7 @@
 
     Event.name = 'Event';
 
-    function Event() {
-      return Event.__super__.constructor.apply(this, arguments);
-    }
-
-    Event.configure("Event", "type", "public", "repo", "created_at", "actor", "id", "payload");
+    Event.configure("Event", "type", "public", "repo", "created_at", "actor", "id", "payload", "commits");
 
     Event.include(TimeStamps);
 
@@ -103,19 +99,71 @@
         var url;
         url = "https://api.github.com/users/" + user.login + "/events?page=" + currentPage + "&callback=?";
         return $.getJSON(url, function(response) {
+          var consolidated;
           $.each(response.data, function(i, eventData) {
             return events.push(new Event(eventData));
           });
           if (currentPage < max && hasMorePages(response.meta)) {
             return fetchHelper(currentPage + 1, events, callback);
-          } else if (hasMorePages(response.meta)) {
-            return callback([currentPage + 1, events]);
           } else {
-            return callback([-1, events]);
+            consolidated = _this.consolidateEvents(events);
+            if (hasMorePages(response.meta)) {
+              return callback([currentPage + 1, consolidated]);
+            } else {
+              return callback([-1, consolidated]);
+            }
           }
         });
       };
       return fetchHelper(page, [], callback);
+    };
+
+    Event.consolidateEvents = function(events) {
+      var e, groups, keptEvent, otherEvents, pushEvents, _, _i, _j, _k, _len, _len1, _len2, _name, _ref, _ref1, _ref2;
+      _ref = [[], []], otherEvents = _ref[0], pushEvents = _ref[1];
+      for (_i = 0, _len = events.length; _i < _len; _i++) {
+        e = events[_i];
+        if (e.type === "PushEvent") {
+          pushEvents.push(e);
+        } else {
+          otherEvents.push(e);
+        }
+      }
+      groups = {};
+      for (_j = 0, _len1 = pushEvents.length; _j < _len1; _j++) {
+        e = pushEvents[_j];
+        groups[_name = e.groupKey()] || (groups[_name] = []);
+        groups[e.groupKey()].push(e);
+      }
+      for (_ in groups) {
+        events = groups[_];
+        keptEvent = events.shift();
+        keptEvent.addCommits((_ref1 = keptEvent.payload) != null ? _ref1.commits : void 0);
+        for (_k = 0, _len2 = events.length; _k < _len2; _k++) {
+          e = events[_k];
+          keptEvent.addCommits((_ref2 = e.payload) != null ? _ref2.commits : void 0);
+        }
+        otherEvents.push(keptEvent);
+      }
+      return otherEvents;
+    };
+
+    function Event(args) {
+      Event.__super__.constructor.call(this, args);
+      this.commits || (this.commits = []);
+    }
+
+    Event.prototype.groupKey = function() {
+      return "" + this.repo.name + "-" + (this.created_at_short_string());
+    };
+
+    Event.prototype.addCommits = function(newCommits) {
+      var _this = this;
+      if (newCommits) {
+        return newCommits.forEach(function(e) {
+          return _this.commits.push(e);
+        });
+      }
     };
 
     Event.prototype.viewType = function() {
@@ -328,7 +376,7 @@
             }
           ];
         case "push":
-          commits = this.payload.commits.map(function(c, i) {
+          commits = this.commits.map(function(c, i) {
             return {
               commit: c.sha,
               commit_url: "https://github.com/" + _this.repo.name + "/commit/" + c.sha,
@@ -339,12 +387,12 @@
             view, {
               id: this.id,
               login: this.actor.login,
-              num: this.payload.commits.length,
+              num: commits.length,
               commits: commits,
               repo_url: "https://github.com/" + this.repo.name,
               repo: this.repo.name,
               date: this.created_at_short_string(),
-              more: this.payload.commits.length > 3
+              more: commits.length > 3
             }
           ];
         case "gollum":
