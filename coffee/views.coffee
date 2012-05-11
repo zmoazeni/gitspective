@@ -50,7 +50,7 @@ views["show"] = """
 </header>
 
 <div class"row">
-  <ul class="nav nav-pills offset3">
+  <ul class="nav nav-pills">
     <li class="active"><a href="#" data-type="push">Push</a></li>
     <li class="active"><a href="#" data-type="fork">Forks</a></li>
     <li class="active"><a href="#" data-type="gist">Gists</a></li>
