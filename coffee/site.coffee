@@ -272,7 +272,7 @@ class window.App extends Spine.Controller
 
   renderUser: (user) =>
     Repo.fetch(user)
-    @content.html(@view("show", user:user, url:location.href))
+    @content.html(@view("show", user:user))
     @content.find("#timeline").append(@view("joined", user:user))
     @refreshElements() # this refreshes @joined and @timeline
     @timeline.masonry(itemSelector:"#timeline li:not(.hidden)")
