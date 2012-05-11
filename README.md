@@ -10,7 +10,5 @@ Oh and the design is hideous. I'd welcome any designers to submit a design and I
 TODO
 --------
 
-* Finish the views for all events
 * Fix odd masonry behavior where all the events shift to the left
-* Better filtering logic (Combine a few items. Not everything is filterable)
 * Relate new repo events with repo list. Renaming repos results in broken links.
