@@ -58,6 +58,7 @@ views["show"] = """
     <li class="active"><a href="#" data-type="tag">Tags</a></li>
     <li class="active"><a href="#" data-type="watch">Follows</a></li>
     <li class="active"><a href="#" data-type="comment">Comments</a></li>
+    <li class="active"><a href="#" data-type="issue">Issues</a></li>
     <li class="active"><a href="#" data-type="item">Unstyled</a></li>
   </ul>
 </div>

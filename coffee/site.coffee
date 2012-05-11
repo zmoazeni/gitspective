@@ -156,6 +156,7 @@ class Event extends Spine.Model
         {
           url:@payload.pull_request._links.html.href
           comment:@payload.pull_request.body
+          type:"issue"
         }
       when "fork"
         {

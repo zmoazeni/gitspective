@@ -278,7 +278,8 @@
           case "pull_request":
             return {
               url: this.payload.pull_request._links.html.href,
-              comment: this.payload.pull_request.body
+              comment: this.payload.pull_request.body,
+              type: "issue"
             };
           case "fork":
             return {
