@@ -173,7 +173,7 @@ class Event extends Spine.Model
       when "follow"
         {
           url:@payload.target.html_url
-          name:@payload.target.name
+          name:(@payload.target.name || @payload.target.login)
           gravatar:@payload.target.avatar_url
           type:"watch"
         }

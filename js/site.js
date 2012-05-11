@@ -300,7 +300,7 @@
           case "follow":
             return {
               url: this.payload.target.html_url,
-              name: this.payload.target.name,
+              name: this.payload.target.name || this.payload.target.login,
               gravatar: this.payload.target.avatar_url,
               type: "watch"
             };
