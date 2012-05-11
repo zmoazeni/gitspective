@@ -14,5 +14,3 @@ TODO
 * Fix odd masonry behavior where all the events shift to the left
 * Better filtering logic (Combine a few items. Not everything is filterable)
 * Relate new repo events with repo list. Renaming repos results in broken links.
-* Consolidate Push events for a single day. There's need to display one block per event.
-* Perhaps wack the site with an ugly stick of hot pink. That may motivate a designer that's currently on the fence :)
