@@ -298,7 +298,8 @@
           case "branch":
             return {
               name: this.payload.ref,
-              url: "https://github.com/" + this.repo.name + "/tree/" + this.payload.ref
+              url: "https://github.com/" + this.repo.name + "/tree/" + this.payload.ref,
+              type: "branch"
             };
           case "push":
             commits = this.commits.map(function(c, i) {

@@ -175,6 +175,7 @@ class Event extends Spine.Model
         {
           name:@payload.ref
           url:"https://github.com/#{@repo.name}/tree/#{@payload.ref}"
+          type:"branch"
         }
       when "push"
         commits = @commits.map (c, i) =>
