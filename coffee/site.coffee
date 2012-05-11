@@ -90,6 +90,7 @@ class Event extends Spine.Model
       FollowEvent:"follow"
       WatchEvent: "watch"
       GollumEvent:"gollum"
+      PublicEvent:"public"
 
       DeleteEvent:  "skip"
       MemberEvent:  "skip"
@@ -126,8 +127,7 @@ class Event extends Spine.Model
   viewInfo: ->
     view = @viewType()
     context = switch view
-      when "repository", "watch"
-        {}
+      when "repository", "watch", "public" then {}
       when "item"
         {title:@type}
       when "gist"

@@ -129,6 +129,12 @@ views["repository"] = """
 </li>
 """
 
+views["public"] = """
+<li class="prominent" data-id="{{id}}">
+  <div class="well">Made public: <a href="{{repo_url}}">{{repo}}</a> <div>{{date}}</div></div>
+</li>
+"""
+
 views["watch"] = """
 <li class="item" data-id="{{id}}" data-type="{{type}}">
   <span class="corner"></span>

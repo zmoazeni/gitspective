@@ -173,6 +173,7 @@
         FollowEvent: "follow",
         WatchEvent: "watch",
         GollumEvent: "gollum",
+        PublicEvent: "public",
         DeleteEvent: "skip",
         MemberEvent: "skip",
         DownloadEvent: "skip",
@@ -245,6 +246,7 @@
         switch (view) {
           case "repository":
           case "watch":
+          case "public":
             return {};
           case "item":
             return {

@@ -28,6 +28,8 @@
 
   views["repository"] = "<li class=\"prominent\" data-id=\"{{id}}\">\n  <div class=\"well\">Created: <a href=\"{{repo_url}}\">{{repo}}</a> <div>{{date}}</div></div>\n</li>";
 
+  views["public"] = "<li class=\"prominent\" data-id=\"{{id}}\">\n  <div class=\"well\">Made public: <a href=\"{{repo_url}}\">{{repo}}</a> <div>{{date}}</div></div>\n</li>";
+
   views["watch"] = "<li class=\"item\" data-id=\"{{id}}\" data-type=\"{{type}}\">\n  <span class=\"corner\"></span>\n  <h1>Began watching <a href=\"{{repo_url}}\">{{repo}}</a></h1>\n  <span class=\"date\">{{date}}</span>\n</li>";
 
   views["branch"] = "<li class=\"item\" data-id=\"{{id}}\" data-type=\"{{type}}\">\n  <span class=\"corner\"></span>\n  <h1>Branched <a href=\"{{url}}\">{{name}}</a> from <a href=\"{{repo_url}}\">{{repo}}</a></h1>\n  <span class=\"date\">{{date}}</span>\n</li>";
