@@ -496,7 +496,8 @@
     App.prototype.renderUser = function(user) {
       Repo.fetch(user);
       this.content.html(this.view("show", {
-        user: user
+        user: user,
+        url: location.href
       }));
       this.content.find("#timeline").append(this.view("joined", {
         user: user
