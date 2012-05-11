@@ -79,39 +79,45 @@ class Event extends Spine.Model
     super(args)
     @commits ||= []
 
-  groupKey: ->
-    "#{@repo.name}-#{@created_at_short_string()}"
+  groupKey: -> "#{@repo.name}-#{@created_at_short_string()}"
 
   addCommits: (newCommits) ->
     newCommits.forEach((e) => @commits.push(e)) if newCommits
 
   viewType: ->
-    switch @type
+    defaultTypes = {
+      ForkEvent:  "fork"
+      FollowEvent:"follow"
+      DeleteEvent:"skip"
+      WatchEvent: "watch"
+      GollumEvent:"gollum"
+    }
+
+    return defaultTypes[@type] if defaultTypes[@type]
+
+    view = switch @type
       when "PullRequestReviewCommentEvent"
-        if @payload.comment._links then "pull_request_comment" else "skip"
+        "pull_request_comment" if @payload.comment._links
       when "IssueCommentEvent"
-        if @payload.issue then "issue_comment" else "skip"
+        "issue_comment" if @payload.issue
       when "IssuesEvent"
-        if @payload.action == "opened" then "issue" else "skip"
+        "issue" if @payload.action == "opened"
       when "CommitCommentEvent"
-        if @payload.comment then "commit_comment" else "skip"
-      when "ForkEvent" then "fork"
-      when "FollowEvent" then "follow"
+        "commit_comment" if @payload.comment
       when "PullRequestEvent"
-        if @payload.action == "opened" && @payload.pull_request._links then "pull_request" else "skip"
+        "pull_request" if @payload.action == "opened" && @payload.pull_request._links
       when "GistEvent"
-        if @payload.action == "create" && @payload.gist then "gist" else "skip"
+        "gist" if @payload.action == "create" && @payload.gist
       when "CreateEvent"
         switch @payload.ref_type
           when "branch"
-            if @payload.ref == "master" then "skip" else "branch"
+            "branch" if @payload.ref != "master"
           else @payload.ref_type
       when "PushEvent"
-        if @payload.commits?.length > 0 then "push" else "skip"
-      when "DeleteEvent" then "skip"
-      when "WatchEvent" then "watch"
-      when "GollumEvent" then "gollum"
+        "push" if @payload.commits?.length > 0
       else "item"
+
+    view || "skip"
 
   viewInfo: ->
     view = @viewType()

@@ -167,83 +167,71 @@
     };
 
     Event.prototype.viewType = function() {
-      var _ref;
-      switch (this.type) {
-        case "PullRequestReviewCommentEvent":
-          if (this.payload.comment._links) {
-            return "pull_request_comment";
-          } else {
-            return "skip";
-          }
-          break;
-        case "IssueCommentEvent":
-          if (this.payload.issue) {
-            return "issue_comment";
-          } else {
-            return "skip";
-          }
-          break;
-        case "IssuesEvent":
-          if (this.payload.action === "opened") {
-            return "issue";
-          } else {
-            return "skip";
-          }
-          break;
-        case "CommitCommentEvent":
-          if (this.payload.comment) {
-            return "commit_comment";
-          } else {
-            return "skip";
-          }
-          break;
-        case "ForkEvent":
-          return "fork";
-        case "FollowEvent":
-          return "follow";
-        case "PullRequestEvent":
-          if (this.payload.action === "opened" && this.payload.pull_request._links) {
-            return "pull_request";
-          } else {
-            return "skip";
-          }
-          break;
-        case "GistEvent":
-          if (this.payload.action === "create" && this.payload.gist) {
-            return "gist";
-          } else {
-            return "skip";
-          }
-          break;
-        case "CreateEvent":
-          switch (this.payload.ref_type) {
-            case "branch":
-              if (this.payload.ref === "master") {
-                return "skip";
-              } else {
-                return "branch";
-              }
-              break;
-            default:
-              return this.payload.ref_type;
-          }
-          break;
-        case "PushEvent":
-          if (((_ref = this.payload.commits) != null ? _ref.length : void 0) > 0) {
-            return "push";
-          } else {
-            return "skip";
-          }
-          break;
-        case "DeleteEvent":
-          return "skip";
-        case "WatchEvent":
-          return "watch";
-        case "GollumEvent":
-          return "gollum";
-        default:
-          return "item";
+      var defaultTypes, view;
+      defaultTypes = {
+        ForkEvent: "fork",
+        FollowEvent: "follow",
+        DeleteEvent: "skip",
+        WatchEvent: "watch",
+        GollumEvent: "gollum"
+      };
+      if (defaultTypes[this.type]) {
+        return defaultTypes[this.type];
       }
+      view = (function() {
+        var _ref;
+        switch (this.type) {
+          case "PullRequestReviewCommentEvent":
+            if (this.payload.comment._links) {
+              return "pull_request_comment";
+            }
+            break;
+          case "IssueCommentEvent":
+            if (this.payload.issue) {
+              return "issue_comment";
+            }
+            break;
+          case "IssuesEvent":
+            if (this.payload.action === "opened") {
+              return "issue";
+            }
+            break;
+          case "CommitCommentEvent":
+            if (this.payload.comment) {
+              return "commit_comment";
+            }
+            break;
+          case "PullRequestEvent":
+            if (this.payload.action === "opened" && this.payload.pull_request._links) {
+              return "pull_request";
+            }
+            break;
+          case "GistEvent":
+            if (this.payload.action === "create" && this.payload.gist) {
+              return "gist";
+            }
+            break;
+          case "CreateEvent":
+            switch (this.payload.ref_type) {
+              case "branch":
+                if (this.payload.ref !== "master") {
+                  return "branch";
+                }
+                break;
+              default:
+                return this.payload.ref_type;
+            }
+            break;
+          case "PushEvent":
+            if (((_ref = this.payload.commits) != null ? _ref.length : void 0) > 0) {
+              return "push";
+            }
+            break;
+          default:
+            return "item";
+        }
+      }).call(this);
+      return view || "skip";
     };
 
     Event.prototype.viewInfo = function() {
