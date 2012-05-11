@@ -260,17 +260,20 @@
           case "issue_comment":
             return {
               url: this.payload.issue.html_url,
-              comment: this.payload.comment.body
+              comment: this.payload.comment.body,
+              type: "comment"
             };
           case "commit_comment":
             return {
               url: this.payload.comment.html_url,
-              comment: this.payload.comment.body
+              comment: this.payload.comment.body,
+              type: "comment"
             };
           case "pull_request_comment":
             return {
               url: this.payload.comment._links.html.href,
-              comment: this.payload.comment.body
+              comment: this.payload.comment.body,
+              type: "comment"
             };
           case "pull_request":
             return {
@@ -287,7 +290,8 @@
             return {
               url: this.payload.target.html_url,
               name: this.payload.target.name,
-              gravatar: this.payload.target.avatar_url
+              gravatar: this.payload.target.avatar_url,
+              type: "watch"
             };
           case "tag":
           case "branch":
@@ -330,12 +334,13 @@
       }).call(this);
       if (context) {
         return [
-          view, $.extend(context, {
+          view, $.extend({
             id: this.id,
             repo: this.repo.name,
             repo_url: "https://github.com/" + this.repo.name,
-            date: this.created_at_short_string()
-          })
+            date: this.created_at_short_string(),
+            type: view
+          }, context)
         ];
       } else {
         return [];
@@ -466,7 +471,7 @@
         _ref = event.viewInfo(), viewType = _ref[0], viewArgs = _ref[1];
         if (viewType) {
           html = _this.view(viewType, viewArgs);
-          if (_this.isHidden(viewType)) {
+          if (_this.isHidden(viewArgs["type"])) {
             html = $(html).addClass("hidden");
           }
           return _this.joined.before(html);

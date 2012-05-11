@@ -138,16 +138,19 @@ class Event extends Spine.Model
         {
           url:@payload.issue.html_url
           comment:@payload.comment.body
+          type:"comment"
         }
       when "commit_comment"
         {
           url:@payload.comment.html_url
           comment:@payload.comment.body
+          type:"comment"
         }
       when "pull_request_comment"
         {
           url:@payload.comment._links.html.href
           comment:@payload.comment.body
+          type:"comment"
         }
       when "pull_request"
         {
@@ -165,6 +168,7 @@ class Event extends Spine.Model
           url:@payload.target.html_url
           name:@payload.target.name
           gravatar:@payload.target.avatar_url
+          type:"watch"
         }
       when "tag", "branch"
         {
@@ -194,12 +198,16 @@ class Event extends Spine.Model
       else null
 
     if context
-      [view, $.extend(context,
-        id:@id
-        repo:@repo.name
-        repo_url:"https://github.com/#{@repo.name}"
-        date:@created_at_short_string()
-      )]
+      [
+        view,
+        $.extend({
+          id:@id
+          repo:@repo.name
+          repo_url:"https://github.com/#{@repo.name}"
+          date:@created_at_short_string()
+          type:view
+        }, context)
+      ]
     else
       []
 
@@ -273,7 +281,7 @@ class window.App extends Spine.Controller
       [viewType, viewArgs] = event.viewInfo()
       if viewType
         html = @view(viewType, viewArgs)
-        html = $(html).addClass("hidden") if @isHidden(viewType)
+        html = $(html).addClass("hidden") if @isHidden(viewArgs["type"])
         @joined.before(html)
     @refreshTimeline()
     @attachWaypoint()

@@ -56,8 +56,8 @@ views["show"] = """
     <li class="active"><a href="#" data-type="gist">Gists</a></li>
     <li class="active"><a href="#" data-type="branch">Branches</a></li>
     <li class="active"><a href="#" data-type="tag">Tags</a></li>
-    <li class="active"><a href="#" data-type="follow">Follows</a></li>
-    <li class="active"><a href="#" data-type="issue_comment">Comments</a></li>
+    <li class="active"><a href="#" data-type="watch">Follows</a></li>
+    <li class="active"><a href="#" data-type="comment">Comments</a></li>
   </ul>
 </div>
 
@@ -75,7 +75,7 @@ views["spinner"] = """
 """
 
 views["item"] = """
-<li class="item" data-id="{{id}}">
+<li class="item" data-id="{{id}}" data-type="{{type}}">
   <span class="corner"></span>
   {{title}}
   <span class="date">{{date}}</span>
@@ -83,7 +83,7 @@ views["item"] = """
 """
 
 views["push"] = """
-<li class="item" data-id="{{id}}" data-type="push">
+<li class="item" data-id="{{id}}" data-type="{{type}}">
   <span class="corner"></span>
   <h1>Pushed {{num}} commit(s) to <a href="{{repo_url}}">{{repo}}</a></h1>
   <ol class="commits">
@@ -103,7 +103,7 @@ views["push"] = """
 """
 
 views["gollum"] = """
-<li class="item" data-id="{{id}}" data-type="push">
+<li class="item" data-id="{{id}}" data-type="{{type}}">
   <span class="corner"></span>
   <h1>Updated {{num}} page(s) for <a href="{{repo_url}}">{{repo}}</a></h1>
   <ol class="commits">
@@ -129,7 +129,7 @@ views["repository"] = """
 """
 
 views["watch"] = """
-<li class="item" data-id="{{id}}" data-type="branch">
+<li class="item" data-id="{{id}}" data-type="{{type}}">
   <span class="corner"></span>
   <h1>Began watching <a href="{{repo_url}}">{{repo}}</a></h1>
   <span class="date">{{date}}</span>
@@ -137,7 +137,7 @@ views["watch"] = """
 """
 
 views["branch"] = """
-<li class="item" data-id="{{id}}" data-type="branch">
+<li class="item" data-id="{{id}}" data-type="{{type}}">
   <span class="corner"></span>
   <h1>Branched <a href="{{url}}">{{name}}</a> from <a href="{{repo_url}}">{{repo}}</a></h1>
   <span class="date">{{date}}</span>
@@ -145,7 +145,7 @@ views["branch"] = """
 """
 
 views["tag"] = """
-<li class="item" data-id="{{id}}" data-type="tag">
+<li class="item" data-id="{{id}}" data-type="{{type}}">
   <span class="corner"></span>
   <h1>Tagged <a href="{{url}}">{{name}}</a> from <a href="{{repo_url}}">{{repo}}</a></h1>
   <span class="date">{{date}}</span>
@@ -153,7 +153,7 @@ views["tag"] = """
 """
 
 views["pull_request_comment"] = """
-<li class="item" data-id="{{id}}">
+<li class="item" data-id="{{id}}" data-type="{{type}}">
   <span class="corner"></span>
   <h1>Commented on a <a href="{{url}}">pull request</a> for <a href="{{repo_url}}">{{repo}}</a></h1>
   <blockquote>{{comment}}</blockquote>
@@ -162,7 +162,7 @@ views["pull_request_comment"] = """
 """
 
 views["issue"] = """
-<li class="item" data-id="{{id}}">
+<li class="item" data-id="{{id}}" data-type="{{type}}">
   <span class="corner"></span>
   <h1>Opened an <a href="{{url}}">issue</a> on <a href="{{repo_url}}">{{repo}}</a></h1>
   <blockquote>{{title}}</blockquote>
@@ -172,7 +172,7 @@ views["issue"] = """
 """
 
 views["gist"] = """
-<li class="item" data-id="{{id}}" data-type="gist">
+<li class="item" data-id="{{id}}" data-type="{{type}}">
   <span class="corner"></span>
   <h1>Created a <a href="{{url}}">gist</a></h1>
   <span class="date">{{date}}</span>
@@ -180,7 +180,7 @@ views["gist"] = """
 """
 
 views["issue_comment"] = """
-<li class="item" data-id="{{id}}" data-type="issue_comment">
+<li class="item" data-id="{{id}}" data-type="{{type}}">
   <span class="corner"></span>
   <h1>Commented on an <a href="{{url}}">issue</a> on <a href="{{repo_url}}">{{repo}}</a></h1>
   <blockquote>{{comment}}</blockquote>
@@ -189,7 +189,7 @@ views["issue_comment"] = """
 """
 
 views["commit_comment"] = """
-<li class="item" data-id="{{id}}">
+<li class="item" data-id="{{id}}" data-type="{{type}}">
   <span class="corner"></span>
   <h1>Commented on a <a href="{{url}}">commit</a> on <a href="{{repo_url}}">{{repo}}</a></h1>
   <blockquote>{{comment}}</blockquote>
@@ -198,7 +198,7 @@ views["commit_comment"] = """
 """
 
 views["pull_request"] = """
-<li class="item" data-id="{{id}}">
+<li class="item" data-id="{{id}}" data-type="{{type}}">
   <span class="corner"></span>
   <h1>Opened a <a href="{{url}}">pull request</a> for <a href="{{repo_url}}">{{repo}}</a></h1>
   <blockquote>{{comment}}</blockquote>
@@ -207,7 +207,7 @@ views["pull_request"] = """
 """
 
 views["fork"] = """
-<li class="item" data-id="{{id}}" data-type="fork">
+<li class="item" data-id="{{id}}" data-type="{{type}}">
   <span class="corner"></span>
   <h1>Forked <a href="{{fork_url}}">{{fork_name}}</a> from <a href="{{repo_url}}">{{repo}}</a></h1>
   {{description}}
@@ -216,7 +216,7 @@ views["fork"] = """
 """
 
 views["follow"] = """
-<li class="item" data-id="{{id}}" data-type="follow">
+<li class="item" data-id="{{id}}" data-type="{{type}}">
   <span class="corner"></span>
   <h1>Started following <a href="{{url}}">{{name}}</a></h1>
   {{#gravatar}}
