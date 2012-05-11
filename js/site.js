@@ -171,9 +171,10 @@
       defaultTypes = {
         ForkEvent: "fork",
         FollowEvent: "follow",
-        DeleteEvent: "skip",
         WatchEvent: "watch",
-        GollumEvent: "gollum"
+        GollumEvent: "gollum",
+        DeleteEvent: "skip",
+        MemberEvent: "skip"
       };
       if (defaultTypes[this.type]) {
         return defaultTypes[this.type];

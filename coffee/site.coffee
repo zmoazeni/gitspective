@@ -88,9 +88,11 @@ class Event extends Spine.Model
     defaultTypes = {
       ForkEvent:  "fork"
       FollowEvent:"follow"
-      DeleteEvent:"skip"
       WatchEvent: "watch"
       GollumEvent:"gollum"
+
+      DeleteEvent:"skip"
+      MemberEvent:"skip"
     }
 
     return defaultTypes[@type] if defaultTypes[@type]
