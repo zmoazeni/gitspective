@@ -176,7 +176,8 @@
         DeleteEvent: "skip",
         MemberEvent: "skip",
         DownloadEvent: "skip",
-        TeamAddEvent: "skip"
+        TeamAddEvent: "skip",
+        ForkApplyEvent: "skip"
       };
       if (defaultTypes[this.type]) {
         return defaultTypes[this.type];

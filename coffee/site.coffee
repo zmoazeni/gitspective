@@ -91,10 +91,11 @@ class Event extends Spine.Model
       WatchEvent: "watch"
       PublicEvent:"public"
 
-      DeleteEvent:  "skip"
-      MemberEvent:  "skip"
-      DownloadEvent:"skip"
-      TeamAddEvent: "skip"
+      DeleteEvent:    "skip"
+      MemberEvent:    "skip"
+      DownloadEvent:  "skip"
+      TeamAddEvent:   "skip"
+      ForkApplyEvent: "skip"
     }
 
     return defaultTypes[@type] if defaultTypes[@type]
