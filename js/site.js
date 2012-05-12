@@ -299,7 +299,7 @@
             };
           case "follow":
             return {
-              url: this.payload.target.html_url,
+              url: this.payload.target.html_url || ("https://github.com/" + this.payload.target.login),
               name: this.payload.target.name || this.payload.target.login,
               gravatar: this.payload.target.avatar_url,
               type: "watch"
